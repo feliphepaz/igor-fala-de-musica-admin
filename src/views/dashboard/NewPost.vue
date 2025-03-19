@@ -1,43 +1,42 @@
 <template>
   <main class="new-post">
-    {{ data }}
-    <div class="dashboard-container">
-      <form class="new-post__form">
-        <label>slug</label>
-        <input v-model="data.slug" type="text" />
+    <div class="new-post__wrapper dashboard-container">
+      <Text as="h1" type="title-h1" color="cherry">Novo post</Text>
 
-        <label>title</label>
-        <input v-model="data.title" type="text" />
+      <form class="new-post__wrapper__form">
+        <Field type="title" name="title" placeholder="Título do post">
+          Título
+        </Field>
 
-        <label>subtitle</label>
-        <input v-model="data.subtitle" type="text" />
+        <Field type="subtitle" name="subtitle" placeholder="Subtítulo do post">
+          Subtítulo
+        </Field>
 
-        <button @click.prevent="submit">Enviar!</button>
+        <File type="hero" @change-file="(file) => console.log(file)" />
+        <File type="thumbnail" @change-file="(file) => console.log(file)" />
       </form>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue'
-
-  function submit() {
-    console.log('enviou!')
-  }
-
-  const data = reactive({
-    slug: null,
-    title: null,
-    subtitle: null,
-    body: null,
-  })
+  import Text from '@/components/Text.vue'
+  import Field from '@/components/Field.vue'
+  import File from '@/components/File.vue'
 </script>
 
 <style lang="scss" scoped>
   .new-post {
-    &__form {
+    &__wrapper {
       display: flex;
       flex-direction: column;
+      gap: 40px;
+
+      &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
     }
   }
 </style>
