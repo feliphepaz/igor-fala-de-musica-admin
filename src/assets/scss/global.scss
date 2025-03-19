@@ -199,5 +199,10 @@ svg {
 }
 
 .dashboard-container {
-  padding: 20px 60px;
+  max-width: 960px;
+  padding: 20px 40px;
+  margin: 0 auto;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

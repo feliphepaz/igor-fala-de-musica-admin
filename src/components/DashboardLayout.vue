@@ -12,6 +12,9 @@
 <style lang="scss" scoped>
   .dashboard-layout {
     display: flex;
-    height: 100vh;
+
+    :deep(main) {
+      width: calc(100% - 300px);
+    }
   }
 </style>

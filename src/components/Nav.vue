@@ -62,7 +62,8 @@
 <style lang="scss" scoped>
   .nav {
     background: $color-white;
-    width: 280px;
+    width: 300px;
+    height: 100vh;
 
     &__header {
       display: flex;
