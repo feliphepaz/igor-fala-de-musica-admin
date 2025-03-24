@@ -19,14 +19,34 @@
 
         <div class="new-post__wrapper__form__images">
           <div class="new-post__wrapper__form__images__field">
-            <Text as="h2" type="title" color="cherry">Hero</Text>
+            <Text class="form-title" as="h2" type="title" color="cherry">
+              Hero
+            </Text>
             <File type="hero" @change-file="(file) => console.log(file)" />
           </div>
 
           <div class="new-post__wrapper__form__images__field">
-            <Text as="h2" type="title" color="cherry">Thumbnail</Text>
+            <Text class="form-title" as="h2" type="title" color="cherry">
+              Thumbnail
+            </Text>
             <File type="thumbnail" @change-file="(file) => console.log(file)" />
           </div>
+        </div>
+
+        <div class="new-post__wrapper__form__body">
+          <div class="new-post__wrapper__form__body__header">
+            <Text class="form-title" as="h2" type="title" color="cherry">
+              Corpo
+            </Text>
+
+            <Text type="text-16" color="black">
+              O construtor de post funciona semelhante a outros editores, como
+              WordPress, etc. Basta selecionar uma ferramenta ao lado, e cada
+              ferramenta corresponde a um bloco.
+            </Text>
+          </div>
+
+          <BodyBuilder />
         </div>
       </form>
     </div>
@@ -39,6 +59,7 @@
   import File from '@/components/File.vue'
   import Category from '@/components/Category.vue'
   import TagsChoice from '@/components/TagsChoice.vue'
+  import BodyBuilder from '@/components/BodyBuilder.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -53,17 +74,29 @@
         flex-direction: column;
         gap: 40px;
 
+        .form-title {
+          &::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background: $color-igor;
+            opacity: $opacity-60;
+            margin-top: 6px;
+          }
+        }
+
         &__options {
           display: flex;
           gap: 40px;
 
           > div {
             &:first-child {
-              width: 45%;
+              width: 35%;
             }
 
             &:last-child {
-              width: 55%;
+              width: 65%;
             }
           }
         }
@@ -77,17 +110,17 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+          }
+        }
 
-            h2 {
-              &::after {
-                content: '';
-                display: block;
-                width: 100%;
-                height: 1px;
-                background: $color-igor;
-                opacity: $opacity-60;
-                margin-top: 6px;
-              }
+        &__body {
+          &__header {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            p {
+              opacity: $opacity-80;
             }
           }
         }
