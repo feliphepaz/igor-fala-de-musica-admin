@@ -12,6 +12,11 @@
           Subtítulo
         </Field>
 
+        <div class="new-post__wrapper__form__options">
+          <Category name="category">Categoria</Category>
+          <TagsChoice />
+        </div>
+
         <div class="new-post__wrapper__form__images">
           <div class="new-post__wrapper__form__images__field">
             <Text as="h2" type="title" color="cherry">Hero</Text>
@@ -32,6 +37,8 @@
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
   import File from '@/components/File.vue'
+  import Category from '@/components/Category.vue'
+  import TagsChoice from '@/components/TagsChoice.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -45,6 +52,21 @@
         display: flex;
         flex-direction: column;
         gap: 40px;
+
+        &__options {
+          display: flex;
+          gap: 40px;
+
+          > div {
+            &:first-child {
+              width: 45%;
+            }
+
+            &:last-child {
+              width: 55%;
+            }
+          }
+        }
 
         &__images {
           display: flex;
