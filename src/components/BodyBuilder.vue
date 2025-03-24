@@ -1,6 +1,9 @@
 <template>
   <div class="body-builder">
     <div class="body-builder__choice">
+      <button class="body-builder__choice__delete" type="button">
+        <CloseIcon />
+      </button>
       <textarea class="body-builder__choice__paragraph" id="paragraph" />
     </div>
 
@@ -33,6 +36,7 @@
     LightBulbIcon,
     CameraIcon,
     FilmIcon,
+    CloseIcon,
   } from '@/assets/icons'
   import Text from '@/components/Text.vue'
 
@@ -64,11 +68,36 @@
   .body-builder {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 40px;
     margin-top: 40px;
 
     &__choice {
-      width: 800px;
+      width: 100%;
+      position: relative;
+
+      &__delete {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        border: none;
+        background: $color-white;
+        border-radius: $radius-rounded;
+        cursor: pointer;
+        transition: $transition-default;
+
+        &:hover {
+          background: $color-cherry;
+
+          :deep(svg path) {
+            fill: $color-white;
+          }
+        }
+      }
 
       &__paragraph {
         outline: none;
