@@ -12,8 +12,17 @@
           Subtítulo
         </Field>
 
-        <File type="hero" @change-file="(file) => console.log(file)" />
-        <File type="thumbnail" @change-file="(file) => console.log(file)" />
+        <div class="new-post__wrapper__form__images">
+          <div class="new-post__wrapper__form__images__field">
+            <Text as="h2" type="title" color="cherry">Hero</Text>
+            <File type="hero" @change-file="(file) => console.log(file)" />
+          </div>
+
+          <div class="new-post__wrapper__form__images__field">
+            <Text as="h2" type="title" color="cherry">Thumbnail</Text>
+            <File type="thumbnail" @change-file="(file) => console.log(file)" />
+          </div>
+        </div>
       </form>
     </div>
   </main>
@@ -35,7 +44,31 @@
       &__form {
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        gap: 40px;
+
+        &__images {
+          display: flex;
+          flex-direction: column;
+          gap: 40px;
+
+          &__field {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            h2 {
+              &::after {
+                content: '';
+                display: block;
+                width: 100%;
+                height: 1px;
+                background: $color-igor;
+                opacity: $opacity-60;
+                margin-top: 6px;
+              }
+            }
+          }
+        }
       }
     }
   }

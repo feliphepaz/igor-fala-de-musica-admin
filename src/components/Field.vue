@@ -32,7 +32,7 @@
     gap: 6px;
 
     &__textarea {
-      border: 2px dashed $color-igor;
+      border: $border-dashed;
       outline: none;
       border-radius: $radius-10;
       padding: 14px;
