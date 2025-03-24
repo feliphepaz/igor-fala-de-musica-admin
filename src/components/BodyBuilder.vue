@@ -1,10 +1,34 @@
 <template>
   <div class="body-builder">
-    <div class="body-builder__choice">
-      <button class="body-builder__choice__delete" type="button">
-        <CloseIcon />
-      </button>
-      <textarea class="body-builder__choice__paragraph" id="paragraph" />
+    <div class="body-builder__blocks">
+      <div
+        v-if="blocks.length"
+        class="body-builder__blocks__block"
+        v-for="(_, index) in blocks"
+        :key="index"
+      >
+        <button
+          class="body-builder__blocks__block__delete"
+          type="button"
+          @click="delBlock(index)"
+        >
+          <CloseIcon />
+        </button>
+
+        <textarea
+          class="body-builder__blocks__block__paragraph"
+          id="paragraph"
+        />
+      </div>
+
+      <Text
+        v-else
+        class="body-builder__blocks__message"
+        type="text-18"
+        color="black"
+      >
+        Que tal adicionar o seu primeiro bloco em? 🤪
+      </Text>
     </div>
 
     <ul class="body-builder__tools">
@@ -13,7 +37,7 @@
         v-for="(tool, index) in tools"
         :key="index"
       >
-        <button type="button">
+        <button type="button" @click="addBlock(tool.type)">
           <component :is="tool.icon" />
         </button>
 
@@ -31,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue'
+
   import {
     NotesIcon,
     LightBulbIcon,
@@ -40,28 +66,44 @@
   } from '@/assets/icons'
   import Text from '@/components/Text.vue'
 
-  const tools = [
+  const blocks = ref<Block[]>([])
+
+  const tools: Tool[] = [
     {
       name: 'Parágrafo',
+      type: 'paragraph',
       description: 'Adiciona um bloco de parágrafo ao texto.',
       icon: NotesIcon,
     },
     {
       name: 'Destaque',
+      type: 'highlight',
       description: 'Destaca ou cita uma parte da música.',
       icon: LightBulbIcon,
     },
     {
       name: 'Imagem',
+      type: 'photo',
       description: 'Insere um bloco de imagem ao texto.',
       icon: CameraIcon,
     },
     {
       name: 'YouTube',
+      type: 'youtube',
       description: 'Incorpora um vídeo do YouTube.',
       icon: FilmIcon,
     },
   ]
+
+  function addBlock(type: 'paragraph' | 'highlight' | 'photo' | 'youtube') {
+    blocks.value.push({
+      type: type,
+    })
+  }
+
+  function delBlock(index: number) {
+    blocks.value.splice(index, 1)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -71,54 +113,66 @@
     gap: 40px;
     margin-top: 40px;
 
-    &__choice {
+    &__blocks {
       width: 100%;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
 
-      &__delete {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        right: -10px;
-        top: -10px;
-        border: none;
-        background: $color-white;
-        border-radius: $radius-rounded;
-        cursor: pointer;
-        transition: $transition-default;
+      &__block {
+        border: 1px dashed $color-igor;
+        border-radius: $radius-10;
+        min-height: 230px;
+        padding: 14px;
+        position: relative;
 
-        &:hover {
-          background: $color-cherry;
+        &__delete {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          position: absolute;
+          right: -10px;
+          top: -10px;
+          border: none;
+          background: $color-white;
+          border-radius: $radius-rounded;
+          cursor: pointer;
+          transition: $transition-default;
 
-          :deep(svg path) {
-            fill: $color-white;
+          &:hover {
+            background: $color-cherry;
+
+            :deep(svg path) {
+              fill: $color-white;
+            }
+          }
+        }
+
+        &__paragraph {
+          outline: none;
+          border: none;
+          background: transparent;
+          resize: vertical;
+          width: 100%;
+          min-height: 100%;
+          max-height: 400px;
+          color: $color-black;
+          font-family: $font-serif;
+          font-weight: $weight-regular;
+          font-size: 20px;
+          line-height: 160%;
+          letter-spacing: 0.2px;
+
+          @include tablet {
+            font-size: 18px;
           }
         }
       }
 
-      &__paragraph {
-        outline: none;
-        width: 100%;
-        border: 1px dashed $color-igor;
-        resize: vertical;
-        min-height: 230px;
-        max-height: 400px;
-        color: $color-black;
-        font-family: $font-serif;
-        font-weight: $weight-regular;
-        border-radius: $radius-10;
-        padding: 14px;
-        background: transparent;
-        font-size: 20px;
-        line-height: 160%;
-        letter-spacing: 0.2px;
-
-        @include tablet {
-          font-size: 18px;
-        }
+      &__message {
+        text-align: center;
       }
     }
 
