@@ -56,6 +56,14 @@
 
           <Review />
         </div>
+
+        <div class="new-post__wrapper__form__spotify">
+          <Text class="form-title" as="h2" type="title" color="cherry">
+            Spotify
+          </Text>
+
+          <Spotify />
+        </div>
       </form>
     </div>
   </main>
@@ -69,6 +77,7 @@
   import TagsChoice from '@/components/TagsChoice.vue'
   import BodyBuilder from '@/components/BodyBuilder.vue'
   import Review from '@/components/Review.vue'
+  import Spotify from '@/components/Spotify.vue'
 
   const categories = [
     {
@@ -153,7 +162,8 @@
           }
         }
 
-        &__review {
+        &__review,
+        &__spotify {
           display: flex;
           flex-direction: column;
           gap: 20px;
