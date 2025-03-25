@@ -12,6 +12,7 @@
           id="tag"
           placeholder="Adicione uma nova tag"
         />
+
         <button class="tags-choice__wrapper__add__submit" type="button">
           +
         </button>
