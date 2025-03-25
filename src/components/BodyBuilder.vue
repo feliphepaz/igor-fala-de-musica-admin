@@ -18,13 +18,14 @@
         <textarea
           v-if="block.type === 'paragraph'"
           class="body-builder__blocks__block__paragraph"
-          id="paragraph"
         />
 
         <File
           v-if="block.type === 'photo'"
           @change-file="(file) => console.log(file)"
         />
+
+        <Highlight v-if="block.type === 'highlight'" />
       </div>
 
       <Text
@@ -39,7 +40,7 @@
 
     <ul class="body-builder__tools">
       <li
-        class="body-builder__tools__tool"
+        :class="['body-builder__tools__tool', `-${tool.type}`]"
         v-for="(tool, index) in tools"
         :key="index"
       >
@@ -72,6 +73,7 @@
   } from '@/assets/icons'
   import Text from '@/components/Text.vue'
   import File from '@/components/File.vue'
+  import Highlight from '@/components/Highlight.vue'
 
   const blocks = ref<Block[]>([])
 
@@ -103,6 +105,8 @@
   ]
 
   function addBlock(type: 'paragraph' | 'highlight' | 'photo' | 'youtube') {
+    if (type === 'youtube') return
+
     blocks.value.push({
       type: type,
     })
@@ -164,6 +168,7 @@
           width: 100%;
           min-height: 200px;
           max-height: 400px;
+          padding: 0;
           color: $color-black;
           font-family: $font-serif;
           font-weight: $weight-regular;
@@ -235,6 +240,13 @@
         &:hover {
           .body-builder__tools__tool__tooltip {
             display: flex;
+          }
+        }
+
+        &.-youtube {
+          button {
+            opacity: $opacity-40;
+            cursor: auto;
           }
         }
       }

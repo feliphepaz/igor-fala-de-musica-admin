@@ -11,7 +11,7 @@
   import Text from '@/components/Text.vue'
 
   interface Props {
-    name: string
+    name?: string
     placeholder: string
   }
 

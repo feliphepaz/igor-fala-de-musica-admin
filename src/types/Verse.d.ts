@@ -1,0 +1,3 @@
+type Verse = {
+  verse: string
+}
