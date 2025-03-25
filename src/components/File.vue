@@ -12,8 +12,29 @@
       </Text>
     </div>
 
-    <div :class="['file__preview', `-${type}`]" v-if="imagePreview">
-      <img :src="imagePreview" alt="Prévia da imagem" />
+    <div class="file__preview" v-if="imagePreview">
+      <img :class="`-${type}`" :src="imagePreview" alt="Prévia da imagem" />
+    </div>
+
+    <div class="file__texts" v-if="type === 'photo' && imagePreview">
+      <SmallField
+        :name="`copyright-${Math.floor(Math.random() * 100)}`"
+        placeholder="Exemplo: Foto por David McClister."
+      >
+        Crédito
+      </SmallField>
+
+      <SmallField
+        :name="`description-${Math.floor(Math.random() * 100)}`"
+        placeholder="Exemplo: Brittany Howard junto com a sua banda Alabama Shakes."
+      >
+        Descrição
+      </SmallField>
+
+      <Text class="file__texts__recommendation" type="text-14" color="white">
+        Ambos são opcionais. Mas os créditos são bons para dar aquela moral pro
+        autor e a descrição melhora a acessibilidade do site.
+      </Text>
     </div>
   </div>
 </template>
@@ -21,12 +42,13 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   import Text from '@/components/Text.vue'
+  import SmallField from './SmallField.vue'
 
   interface Props {
-    type: 'hero' | 'thumbnail' | 'photo'
+    type?: 'hero' | 'thumbnail' | 'photo'
   }
 
-  const { type } = defineProps<Props>()
+  const { type = 'photo' } = defineProps<Props>()
 
   const emit = defineEmits(['changeFile'])
 
@@ -92,13 +114,35 @@
     }
 
     &__preview {
-      &.-hero {
-        height: 460px;
-      }
+      display: flex;
+      justify-content: center;
 
-      &.-thumbnail {
-        width: 393.33px;
-        height: 200px;
+      img {
+        &.-hero {
+          height: 460px;
+        }
+
+        &.-thumbnail {
+          width: 393.33px;
+          height: 200px;
+        }
+
+        &.-photo {
+          width: 800px;
+          height: 460px;
+        }
+      }
+    }
+
+    &__texts {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      &__recommendation {
+        background: $color-cherry;
+        opacity: $opacity-60;
+        padding: 10px;
       }
     }
   }

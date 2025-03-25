@@ -9,6 +9,7 @@
         <input
           class="tags-choice__wrapper__add__field"
           type="text"
+          id="tag"
           placeholder="Adicione uma nova tag"
         />
         <button class="tags-choice__wrapper__add__submit" type="button">

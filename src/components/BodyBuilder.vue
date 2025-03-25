@@ -4,7 +4,7 @@
       <div
         v-if="blocks.length"
         class="body-builder__blocks__block"
-        v-for="(_, index) in blocks"
+        v-for="(block, index) in blocks"
         :key="index"
       >
         <button
@@ -16,8 +16,14 @@
         </button>
 
         <textarea
+          v-if="block.type === 'paragraph'"
           class="body-builder__blocks__block__paragraph"
           id="paragraph"
+        />
+
+        <File
+          v-if="block.type === 'photo'"
+          @change-file="(file) => console.log(file)"
         />
       </div>
 
@@ -65,6 +71,7 @@
     CloseIcon,
   } from '@/assets/icons'
   import Text from '@/components/Text.vue'
+  import File from '@/components/File.vue'
 
   const blocks = ref<Block[]>([])
 
@@ -110,7 +117,7 @@
   .body-builder {
     display: flex;
     justify-content: space-between;
-    gap: 40px;
+    gap: 80px;
     margin-top: 40px;
 
     &__blocks {
@@ -122,7 +129,6 @@
       &__block {
         border: 1px dashed $color-igor;
         border-radius: $radius-10;
-        min-height: 230px;
         padding: 14px;
         position: relative;
 
@@ -156,7 +162,7 @@
           background: transparent;
           resize: vertical;
           width: 100%;
-          min-height: 100%;
+          min-height: 200px;
           max-height: 400px;
           color: $color-black;
           font-family: $font-serif;
