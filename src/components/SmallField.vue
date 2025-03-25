@@ -1,9 +1,18 @@
 <template>
   <div class="small-field">
     <label :for="name">
-      <Text as="span" type="text-16" color="black"><slot /></Text>
+      <Text
+        v-if="variation === 'big-label'"
+        as="span"
+        type="text-18"
+        color="black"
+      >
+        <slot />
+      </Text>
+      <Text v-else as="span" type="text-16" color="black"><slot /></Text>
     </label>
-    <input :id="name" type="text" :placeholder="placeholder" />
+
+    <input :id="name" type="text" :placeholder="placeholder" v-model="value" />
   </div>
 </template>
 
@@ -13,9 +22,12 @@
   interface Props {
     name?: string
     placeholder: string
+    variation?: 'big-label' | 'default'
   }
 
-  defineProps<Props>()
+  const { variation = 'default' } = defineProps<Props>()
+
+  const value = defineModel()
 </script>
 
 <style lang="scss" scoped>

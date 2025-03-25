@@ -13,7 +13,7 @@
         </Field>
 
         <div class="new-post__wrapper__form__options">
-          <Category name="category">Categoria</Category>
+          <Select name="category" :options="categories">Categoria</Select>
           <TagsChoice />
         </div>
 
@@ -48,6 +48,14 @@
 
           <BodyBuilder />
         </div>
+
+        <div class="new-post__wrapper__form__review">
+          <Text class="form-title" as="h2" type="title" color="cherry">
+            Crítica
+          </Text>
+
+          <Review />
+        </div>
       </form>
     </div>
   </main>
@@ -57,9 +65,29 @@
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
   import File from '@/components/File.vue'
-  import Category from '@/components/Category.vue'
+  import Select from '@/components/Select.vue'
   import TagsChoice from '@/components/TagsChoice.vue'
   import BodyBuilder from '@/components/BodyBuilder.vue'
+  import Review from '@/components/Review.vue'
+
+  const categories = [
+    {
+      title: 'Devaneio',
+      slug: 'devaneio',
+    },
+    {
+      title: 'Lista',
+      slug: 'lista',
+    },
+    {
+      title: 'Crítica',
+      slug: 'critica',
+    },
+    {
+      title: 'Playlist',
+      slug: 'playlist',
+    },
+  ]
 </script>
 
 <style lang="scss" scoped>
@@ -123,6 +151,12 @@
               opacity: $opacity-80;
             }
           }
+        }
+
+        &__review {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
         }
       }
     }

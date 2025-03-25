@@ -4,12 +4,16 @@
       <Text as="span" type="text-18" color="black"><slot /></Text>
     </label>
 
-    <select class="select__field" :id="name">
+    <select
+      class="select__field"
+      :id="name"
+      @change="({ target }) => getSelect(target as EventTarget)"
+    >
       <option value="">Selecione</option>
       <option
         v-for="(option, index) in options"
         :key="index"
-        :value="getOptionValue(option)"
+        :value="getOptionValue(option, index)"
       >
         {{ getOptionLabel(option) }}
       </option>
@@ -20,9 +24,9 @@
 <script setup lang="ts">
   import Text from '@/components/Text.vue'
 
-  type Option = {
+  type Album = {
     name: string
-    value: string
+    artist: string
   }
 
   type Category = {
@@ -32,24 +36,34 @@
 
   interface Props {
     name: string
-    options: Option[] | Category[]
+    options: Album[] | Category[]
   }
 
-  function getOptionValue(option: Option | Category) {
-    if ('value' in option) {
-      return option.value
+  function getOptionValue(option: Album | Category, index: number) {
+    if ('artist' in option) {
+      return index
     }
-    return option.slug
+
+    if ('slug' in option) {
+      return option.slug
+    }
   }
 
-  function getOptionLabel(option: Option | Category) {
-    if ('name' in option) {
-      return option.name
+  function getOptionLabel(option: Album | Category) {
+    if ('artist' in option) {
+      return `${option.name} - ${option.artist}`
     }
+
     return option.title
   }
 
   defineProps<Props>()
+
+  const emit = defineEmits(['changeSelect'])
+
+  function getSelect(target: EventTarget) {
+    emit('changeSelect', (target as HTMLInputElement).value)
+  }
 </script>
 
 <style lang="scss" scoped>
