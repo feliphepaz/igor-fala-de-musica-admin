@@ -200,11 +200,20 @@ svg {
 
 .dashboard-container {
   max-width: 1140px;
-  padding: 20px 40px;
+  padding: 20px 40px 60px 20px;
   margin: 0 auto;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-white;
+  }
 }
 
 // Swal

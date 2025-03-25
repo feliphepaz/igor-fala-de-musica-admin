@@ -64,6 +64,10 @@
 
           <Spotify />
         </div>
+
+        <button class="new-post__wrapper__form__submit" type="button">
+          <Text type="title" color="cherry">Postar!</Text>
+        </button>
       </form>
     </div>
   </main>
@@ -167,6 +171,25 @@
           display: flex;
           flex-direction: column;
           gap: 20px;
+        }
+
+        &__submit {
+          background: $color-igor;
+          border-radius: $radius-10;
+          white-space: nowrap;
+          padding: 20px;
+          border: none;
+          cursor: pointer;
+          margin-top: 20px;
+          transition: $transition-default;
+
+          &:hover {
+            background: $color-cherry;
+
+            .text {
+              color: $color-white;
+            }
+          }
         }
       }
     }

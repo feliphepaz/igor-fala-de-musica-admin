@@ -99,6 +99,15 @@
         overflow-x: hidden;
         flex-wrap: wrap;
         gap: 10px;
+
+        &::-webkit-scrollbar {
+          width: 4px;
+          background: rgba(0, 0, 0, 0.1);
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: $color-white;
+        }
       }
     }
   }
