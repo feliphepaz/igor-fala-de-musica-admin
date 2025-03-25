@@ -6,10 +6,13 @@
 
     <select class="select__field" :id="name">
       <option value="">Selecione</option>
-      <option value="devaneio">Devaneio</option>
-      <option value="lista">Lista</option>
-      <option value="critica">Crítica</option>
-      <option value="playlist">Playlist</option>
+      <option
+        v-for="(option, index) in options"
+        :key="index"
+        :value="getOptionValue(option)"
+      >
+        {{ getOptionLabel(option) }}
+      </option>
     </select>
   </div>
 </template>
@@ -17,8 +20,33 @@
 <script setup lang="ts">
   import Text from '@/components/Text.vue'
 
+  type Option = {
+    name: string
+    value: string
+  }
+
+  type Category = {
+    title: string
+    slug: string
+  }
+
   interface Props {
     name: string
+    options: Option[] | Category[]
+  }
+
+  function getOptionValue(option: Option | Category) {
+    if ('value' in option) {
+      return option.value
+    }
+    return option.slug
+  }
+
+  function getOptionLabel(option: Option | Category) {
+    if ('name' in option) {
+      return option.name
+    }
+    return option.title
   }
 
   defineProps<Props>()
