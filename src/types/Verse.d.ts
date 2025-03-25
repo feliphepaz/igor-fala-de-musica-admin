@@ -1,3 +1,0 @@
-type Verse = {
-  verse: string
-}
