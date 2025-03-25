@@ -206,3 +206,52 @@ svg {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+// Swal
+.swal2-modal {
+  background: $color-white;
+  border-radius: $radius-20;
+}
+
+.swal2-icon {
+  margin: 20px auto 0 auto;
+}
+
+#swal2-title {
+  font-family: $font-sans;
+  font-weight: $weight-bold;
+  font-size: 18px;
+  line-height: 120%;
+  color: $color-black;
+}
+
+#swal2-html-container {
+  font-family: $font-sans;
+  font-weight: $weight-regular;
+  font-size: 16px;
+  line-height: 120%;
+  color: $color-black;
+}
+
+.swal2-confirm,
+.swal2-deny,
+.swal2-cancel {
+  margin: 0;
+  outline: none;
+  background: $color-cherry;
+  border-radius: $radius-20;
+  font-family: $font-sans;
+  font-weight: $weight-bold;
+  font-size: 18px;
+  line-height: 120%;
+  white-space: nowrap;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: $opacity-80;
+  transition: $transition-default;
+
+  &:hover {
+    opacity: $opacity-100;
+  }
+}
