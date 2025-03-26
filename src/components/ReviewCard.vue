@@ -55,7 +55,7 @@
     if (scoreToNumber >= 6 && scoreToNumber < 7) return 'Médio'
     if (scoreToNumber < 4 && scoreToNumber >= 2) return 'Ruim'
     if (scoreToNumber < 2) return 'Uma merda 💩'
-    return 'Não fede, nem cheira'
+    return 'Não fede nem cheira'
   })
 
   function maskScore(e: Event) {
