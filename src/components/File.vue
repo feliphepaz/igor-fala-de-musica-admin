@@ -48,13 +48,21 @@
 
   interface Props {
     type?: 'hero' | 'thumbnail' | 'photo'
+    initialImagePreview?: string
+    initialCopyright?: string
+    initialDescription?: string
   }
 
-  const { type = 'photo' } = defineProps<Props>()
+  const {
+    type = 'photo',
+    initialImagePreview = '',
+    initialCopyright = '',
+    initialDescription = '',
+  } = defineProps<Props>()
 
-  const imagePreview = ref('')
-  const copyright = ref('')
-  const description = ref('')
+  const imagePreview = ref(initialImagePreview)
+  const copyright = ref(initialCopyright)
+  const description = ref(initialDescription)
 
   const emit = defineEmits(['changeFile'])
 
