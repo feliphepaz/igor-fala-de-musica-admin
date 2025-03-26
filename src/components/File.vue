@@ -20,6 +20,7 @@
       <SmallField
         :name="`copyright-${Math.floor(Math.random() * 100)}`"
         placeholder="Exemplo: Foto por David McClister."
+        v-model="copyright"
       >
         Crédito
       </SmallField>
@@ -27,6 +28,7 @@
       <SmallField
         :name="`description-${Math.floor(Math.random() * 100)}`"
         placeholder="Exemplo: Brittany Howard junto com a sua banda Alabama Shakes."
+        v-model="description"
       >
         Descrição
       </SmallField>
@@ -40,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import Text from '@/components/Text.vue'
   import SmallField from './SmallField.vue'
 
@@ -50,9 +52,11 @@
 
   const { type = 'photo' } = defineProps<Props>()
 
-  const emit = defineEmits(['changeFile'])
-
   const imagePreview = ref('')
+  const copyright = ref('')
+  const description = ref('')
+
+  const emit = defineEmits(['changeFile'])
 
   const recommendedSize = computed(() => {
     if (type === 'hero') return '1920 x 1240px'
@@ -72,6 +76,18 @@
 
     emit('changeFile', file)
   }
+
+  watch(
+    [imagePreview, copyright, description],
+    ([newImagePreview, newCopyright, newDescription]) => {
+      emit('changeFile', {
+        file: newImagePreview,
+        copyright: newCopyright,
+        description: newDescription,
+      })
+    },
+    { immediate: true },
+  )
 </script>
 
 <style lang="scss" scoped>

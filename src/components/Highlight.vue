@@ -3,10 +3,11 @@
     <div class="highlight__content">
       <div class="highlight__content__verses">
         <input
-          class="highlight__content__verses__verse"
-          type="text"
           v-for="(_, index) in verses"
           :key="index"
+          class="highlight__content__verses__verse"
+          type="text"
+          v-model="verses[index]"
         />
 
         <button
@@ -20,26 +21,52 @@
     </div>
 
     <div class="highlight__author">
-      <SmallField placeholder="Título da música">Música</SmallField>
-      <SmallField placeholder="Nome da banda ou autor(a)">Banda</SmallField>
+      <SmallField placeholder="Título da música" v-model="music">
+        Música
+      </SmallField>
+      <SmallField placeholder="Nome da banda ou autor(a)" v-model="band">
+        Banda
+      </SmallField>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   import SmallField from '@/components/SmallField.vue'
 
-  const verses = ref<Verse[]>([
-    {
-      verse: '',
+  interface Props {
+    initialVerses?: string[]
+    initialMusic?: string
+    initialBand?: string
+  }
+
+  const {
+    initialVerses = [],
+    initialMusic = '',
+    initialBand = '',
+  } = defineProps<Props>()
+
+  const verses = ref(initialVerses)
+  const music = ref(initialMusic)
+  const band = ref(initialBand)
+
+  const emit = defineEmits(['changeHighlight'])
+
+  watch(
+    [verses, music, band],
+    ([newVerses, newMusic, newBand]) => {
+      emit('changeHighlight', {
+        verses: newVerses,
+        music: newMusic,
+        band: newBand,
+      })
     },
-  ])
+    { immediate: true },
+  )
 
   function addVerse() {
-    verses.value.push({
-      verse: '',
-    })
+    verses.value.push('')
   }
 </script>
 

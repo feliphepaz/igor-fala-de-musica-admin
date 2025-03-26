@@ -1,9 +1,12 @@
-type Verse = {
-  verse: string
-}
-
 type BlockType = 'paragraph' | 'highlight' | 'photo' | 'youtube'
 
 type Block = {
   type: BlockType
+  content?: string
+  verses?: string[]
+  music?: string
+  band?: string
+  file?: File
+  copyright?: string
+  description?: string
 }

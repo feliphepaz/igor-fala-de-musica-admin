@@ -18,14 +18,24 @@
         <textarea
           v-if="block.type === 'paragraph'"
           class="body-builder__blocks__block__paragraph"
+          :value="blocks[index].content"
+          @input="({ target }) => editBlock(index, target as EventTarget)"
         />
 
         <File
           v-if="block.type === 'photo'"
-          @change-file="(file) => console.log(file)"
+          @change-file="(file) => editBlock(index, undefined, undefined, file)"
         />
 
-        <Highlight v-if="block.type === 'highlight'" />
+        <Highlight
+          v-if="block.type === 'highlight'"
+          :initial-verses="block.verses"
+          :initial-music="block.music"
+          :initial-band="block.band"
+          @change-highlight="
+            (highlight) => editBlock(index, undefined, highlight)
+          "
+        />
       </div>
 
       <Text
@@ -75,6 +85,18 @@
   import File from '@/components/File.vue'
   import Highlight from '@/components/Highlight.vue'
 
+  type Highlight = {
+    verses: string[]
+    music: string
+    band: string
+  }
+
+  type Photo = {
+    file: File
+    copyright: string
+    description: string
+  }
+
   const blocks = ref<Block[]>([])
 
   const tools: Tool[] = [
@@ -107,9 +129,52 @@
   function addBlock(type: 'paragraph' | 'highlight' | 'photo' | 'youtube') {
     if (type === 'youtube') return
 
+    if (type === 'highlight') {
+      return blocks.value.push({
+        type,
+        verses: [''],
+        music: '',
+        band: '',
+      })
+    }
+
+    if (type === 'photo') {
+      return blocks.value.push({
+        type,
+        file: undefined,
+        copyright: '',
+        description: '',
+      })
+    }
+
     blocks.value.push({
-      type: type,
+      type,
     })
+  }
+
+  function editBlock(
+    index: number,
+    target?: EventTarget,
+    highlight?: Highlight,
+    file?: Photo,
+  ) {
+    const block = blocks.value[index]
+
+    if (block.type === 'paragraph') {
+      block.content = (target as HTMLInputElement).value
+    }
+
+    if (block.type === 'highlight' && highlight) {
+      block.verses = highlight.verses
+      block.music = highlight.music
+      block.band = highlight.band
+    }
+
+    if (block.type === 'photo' && file) {
+      block.file = file.file
+      block.copyright = file.copyright
+      block.description = file.description
+    }
   }
 
   function delBlock(index: number) {
