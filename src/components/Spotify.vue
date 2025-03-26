@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
 
   import Text from '@/components/Text.vue'
   import Swal from 'sweetalert2'
@@ -54,6 +54,15 @@
   const albumId = ref('')
   const iframeSrc = ref('')
   const hasSpotifyWidget = ref(false)
+
+  const emit = defineEmits(['changeSpotify'])
+
+  watch([showSpotifyWidget, albumId], ([newShowSpotifyWidget, newAlbumId]) => {
+    emit('changeSpotify', {
+      embed: newShowSpotifyWidget,
+      id: newAlbumId,
+    })
+  })
 
   function generateSpotifyWidget() {
     hasSpotifyWidget.value = false

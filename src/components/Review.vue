@@ -57,12 +57,18 @@
         )?.['#text']
       "
       :year="year"
+      @change-review-card="
+        (scoreCard, ratingTextCard) => {
+          score = scoreCard
+          ratingText = ratingTextCard
+        }
+      "
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
 
   import Text from '@/components/Text.vue'
   import Select from '@/components/Select.vue'
@@ -72,8 +78,34 @@
 
   const albumSearched = ref('')
   const albums = ref<Album[]>([])
-  const selectedAlbum = ref(null)
+  const selectedAlbum = ref<number | null>(null)
   const year = ref('')
+  const score = ref('')
+  const ratingText = ref('')
+
+  const emit = defineEmits(['changeReview'])
+
+  watch(
+    [selectedAlbum, year, score, ratingText],
+    ([newSelectedAlbum, newYear, newScore, newRatingText]) => {
+      const album = albums.value[newSelectedAlbum as number]
+
+      emit('changeReview', {
+        album: {
+          cover: album.image.find((image) => image.size === 'extralarge')?.[
+            '#text'
+          ],
+          year: newYear,
+          name: album.name,
+          artist: album.artist,
+        },
+        review: {
+          score: newScore,
+          ratingText: newRatingText,
+        },
+      })
+    },
+  )
 
   async function searchAlbum() {
     try {

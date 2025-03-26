@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
 
   import {
     NotesIcon,
@@ -98,6 +98,8 @@
   }
 
   const blocks = ref<Block[]>([])
+
+  const emit = defineEmits(['changeBody'])
 
   const tools: Tool[] = [
     {
@@ -125,6 +127,10 @@
       icon: FilmIcon,
     },
   ]
+
+  watch(blocks.value, (newBlocks) => {
+    emit('changeBody', newBlocks)
+  })
 
   function addBlock(type: 'paragraph' | 'highlight' | 'photo' | 'youtube') {
     if (type === 'youtube') return

@@ -1,5 +1,4 @@
 <template>
-  {{ post }}
   <main class="new-post">
     <div class="new-post__wrapper dashboard-container">
       <Text as="h1" type="title-h1" color="cherry">Novo post</Text>
@@ -40,14 +39,20 @@
             <Text class="form-title" as="h2" type="title" color="cherry">
               Hero
             </Text>
-            <File type="hero" @change-file="(file) => console.log(file)" />
+            <File
+              type="hero"
+              @change-file="(file) => (post.images[0].file = file)"
+            />
           </div>
 
           <div class="new-post__wrapper__form__images__field">
             <Text class="form-title" as="h2" type="title" color="cherry">
               Thumbnail
             </Text>
-            <File type="thumbnail" @change-file="(file) => console.log(file)" />
+            <File
+              type="thumbnail"
+              @change-file="(file) => (post.images[1].file = file)"
+            />
           </div>
         </div>
 
@@ -64,7 +69,7 @@
             </Text>
           </div>
 
-          <BodyBuilder />
+          <BodyBuilder @change-body="(body) => (post.body = body)" />
         </div>
 
         <div class="new-post__wrapper__form__review">
@@ -72,7 +77,7 @@
             Crítica
           </Text>
 
-          <Review />
+          <Review @change-review="(review) => (post.review = review)" />
         </div>
 
         <div class="new-post__wrapper__form__spotify">
@@ -80,10 +85,10 @@
             Spotify
           </Text>
 
-          <Spotify />
+          <Spotify @change-spotify="(spotify) => (post.spotify = spotify)" />
         </div>
 
-        <button class="new-post__wrapper__form__submit" type="button">
+        <button class="new-post__wrapper__form__submit" @click.prevent="submit">
           <Text type="title" color="cherry">Postar!</Text>
         </button>
       </form>
@@ -122,12 +127,31 @@
     },
   ]
 
-  const post = reactive({
+  const post = reactive<Post>({
     title: '',
     subtitle: '',
     category: '',
     tags: null,
+    images: [
+      {
+        type: 'hero',
+        file: null,
+      },
+      {
+        type: 'thumbnail',
+        file: null,
+      },
+    ],
+    body: null,
+    spotify: {
+      embed: false,
+      id: null,
+    },
   })
+
+  function submit() {
+    console.log(post)
+  }
 </script>
 
 <style lang="scss" scoped>

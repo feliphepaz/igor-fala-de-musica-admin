@@ -1,16 +1,33 @@
 type Post = {
-  slug: string
   title: string
   subtitle: string
-  body: {
-    type: 'paragraph' | 'image' | 'youtube'
-    content?: string
-    src?: string
-  }[]
-  images: {
-    type: 'hero' | 'thumbnail'
-    src: string
-  }[]
-  tags?: number[]
-  category?: 'Devaneio' | 'Lista' | 'Crítica' | 'Playlist'
+  category: string
+  tags: string[] | null
+  images: [
+    {
+      type: 'hero'
+      file: File | null
+    },
+    {
+      type: 'thumbnail'
+      file: File | null
+    },
+  ]
+  body: Block[] | null
+  review?: {
+    album: {
+      cover: string
+      year?: string
+      name: string
+      artist: string
+    }
+    rating: {
+      score: string
+      text: string
+    }
+  }
+  spotify: {
+    embed: boolean
+    id: string | null
+  }
 }

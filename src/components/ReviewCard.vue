@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import Text from '@/components/Text.vue'
 
   interface Props {
@@ -46,6 +46,8 @@
 
   const score = ref('5.0')
 
+  const emit = defineEmits(['changeReviewCard'])
+
   const ratingText = computed(() => {
     const scoreToNumber = +score.value
 
@@ -57,6 +59,14 @@
     if (scoreToNumber < 2) return 'Uma merda 💩'
     return 'Não fede nem cheira'
   })
+
+  watch(
+    [score, ratingText],
+    ([newScore, newRatingText]) => {
+      emit('changeReviewCard', newScore, newRatingText)
+    },
+    { immediate: true },
+  )
 
   function maskScore(e: Event) {
     let value = (e.target as HTMLInputElement).value.replace(/[^0-9.]/g, '')

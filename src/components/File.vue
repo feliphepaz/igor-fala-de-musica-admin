@@ -88,11 +88,15 @@
   watch(
     [imagePreview, copyright, description],
     ([newImagePreview, newCopyright, newDescription]) => {
-      emit('changeFile', {
-        file: newImagePreview,
-        copyright: newCopyright,
-        description: newDescription,
-      })
+      if (type === 'photo') {
+        return emit('changeFile', {
+          file: newImagePreview,
+          copyright: newCopyright,
+          description: newDescription,
+        })
+      }
+
+      emit('changeFile', newImagePreview)
     },
     { immediate: true },
   )
