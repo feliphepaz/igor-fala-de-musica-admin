@@ -1,20 +1,38 @@
 <template>
+  {{ post }}
   <main class="new-post">
     <div class="new-post__wrapper dashboard-container">
       <Text as="h1" type="title-h1" color="cherry">Novo post</Text>
 
       <form class="new-post__wrapper__form">
-        <Field type="title" name="title" placeholder="Título do post">
+        <Field
+          type="title"
+          name="title"
+          placeholder="Título do post"
+          v-model="post.title"
+        >
           Título
         </Field>
 
-        <Field type="subtitle" name="subtitle" placeholder="Subtítulo do post">
+        <Field
+          type="subtitle"
+          name="subtitle"
+          placeholder="Subtítulo do post"
+          v-model="post.subtitle"
+        >
           Subtítulo
         </Field>
 
         <div class="new-post__wrapper__form__options">
-          <Select name="category" :options="categories">Categoria</Select>
-          <TagsChoice />
+          <Select
+            name="category"
+            :options="categories"
+            @change-select="(selected) => (post.category = selected)"
+          >
+            Categoria
+          </Select>
+
+          <TagsChoice @change-tags="(tags) => (post.tags = tags)" />
         </div>
 
         <div class="new-post__wrapper__form__images">
@@ -74,6 +92,8 @@
 </template>
 
 <script setup lang="ts">
+  import { reactive } from 'vue'
+
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
   import File from '@/components/File.vue'
@@ -101,6 +121,13 @@
       slug: 'playlist',
     },
   ]
+
+  const post = reactive({
+    title: '',
+    subtitle: '',
+    category: '',
+    tags: null,
+  })
 </script>
 
 <style lang="scss" scoped>

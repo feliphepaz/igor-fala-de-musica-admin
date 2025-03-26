@@ -9,12 +9,14 @@
       type="text"
       :id="name"
       :placeholder="placeholder"
+      v-model="value"
     />
   </div>
 </template>
 
 <script setup lang="ts">
   import Text from '@/components/Text.vue'
+  import type { ModelRef } from 'vue'
 
   interface Props {
     name: string
@@ -23,6 +25,8 @@
   }
 
   const { type } = defineProps<Props>()
+
+  const value: ModelRef<string | undefined> = defineModel()
 </script>
 
 <style lang="scss" scoped>

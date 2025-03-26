@@ -19,27 +19,51 @@
       </div>
 
       <div class="tags-choice__wrapper__list">
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
-        <Tag />
+        <Tag
+          v-for="tag in tags"
+          :key="tag.id"
+          :slug="tag.slug"
+          @change-tag="(tag, selected) => manageTags(tag, selected)"
+        >
+          {{ tag.title }}
+        </Tag>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { ref, onMounted } from 'vue'
+
   import Tag from '@/components/Tag.vue'
   import Text from '@/components/Text.vue'
+
+  import useTags from '@/composables/tags'
+
+  const { tags, getTags } = useTags()
+
+  const activeTags = ref<string[]>([])
+
+  onMounted(async () => {
+    await getTags()
+  })
+
+  const emit = defineEmits(['changeTags'])
+
+  function manageTags(tag: string, selected: boolean) {
+    if (selected) {
+      if (!activeTags.value.includes(tag)) {
+        activeTags.value.push(tag)
+      }
+    } else {
+      const index = activeTags.value.indexOf(tag)
+      if (index !== -1) {
+        activeTags.value.splice(index, 1)
+      }
+    }
+
+    emit('changeTags', activeTags.value)
+  }
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
     <select
       class="select__field"
       :id="name"
-      @change="({ target }) => getSelect(target as EventTarget)"
+      @change="({ target }) => getSelected(target as EventTarget)"
     >
       <option value="">Selecione</option>
       <option
@@ -61,7 +61,7 @@
 
   const emit = defineEmits(['changeSelect'])
 
-  function getSelect(target: EventTarget) {
+  function getSelected(target: EventTarget) {
     emit('changeSelect', (target as HTMLInputElement).value)
   }
 </script>
