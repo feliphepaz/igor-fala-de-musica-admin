@@ -60,6 +60,7 @@
     initialDescription = '',
   } = defineProps<Props>()
 
+  const file = ref<File | null>(null)
   const imagePreview = ref(initialImagePreview)
   const copyright = ref(initialCopyright)
   const description = ref(initialDescription)
@@ -73,30 +74,31 @@
   })
 
   function getImage(target: EventTarget) {
-    const file = (target as HTMLInputElement).files?.[0]
+    const fileRaw = (target as HTMLInputElement).files?.[0]
     const reader = new FileReader()
 
     reader.onload = () => {
       imagePreview.value = reader.result as string
     }
 
-    if (file) reader.readAsDataURL(file)
-
-    emit('changeFile', file)
+    if (fileRaw) {
+      file.value = fileRaw
+      reader.readAsDataURL(fileRaw)
+    }
   }
 
   watch(
-    [imagePreview, copyright, description],
-    ([newImagePreview, newCopyright, newDescription]) => {
+    [file, copyright, description],
+    ([newFile, newCopyright, newDescription]) => {
       if (type === 'photo') {
         return emit('changeFile', {
-          file: newImagePreview,
+          file: newFile,
           copyright: newCopyright,
           description: newDescription,
         })
       }
 
-      emit('changeFile', newImagePreview)
+      emit('changeFile', newFile)
     },
     { immediate: true },
   )

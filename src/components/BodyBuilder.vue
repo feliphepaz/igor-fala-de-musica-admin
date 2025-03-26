@@ -138,7 +138,7 @@
     if (type === 'highlight') {
       return blocks.value.push({
         type,
-        verses: [''],
+        verses: [],
         music: '',
         band: '',
       })
@@ -148,8 +148,6 @@
       return blocks.value.push({
         type,
         file: undefined,
-        copyright: '',
-        description: '',
       })
     }
 

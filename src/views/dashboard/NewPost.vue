@@ -108,6 +108,10 @@
   import Review from '@/components/Review.vue'
   import Spotify from '@/components/Spotify.vue'
 
+  import useImages from '@/composables/images'
+
+  const { uploadImage } = useImages()
+
   const categories = [
     {
       title: 'Devaneio',
@@ -149,8 +153,29 @@
     },
   })
 
-  function submit() {
-    console.log(post)
+  async function submit() {
+    let postData: any = post
+
+    const hero = postData.images[0]
+    const thumbnail = postData.images[1]
+
+    if (hero.file && thumbnail.file) {
+      postData.images[0].file = await uploadImage(hero.file, 'heros')
+      postData.images[1].file = await uploadImage(thumbnail.file, 'thumbnails')
+    }
+
+    if (postData.body) {
+      const newBlocks = await Promise.all(
+        postData.body.map(async (block: any) => {
+          if (block.type === 'photo') {
+            block.file = await uploadImage(block.file, 'photos')
+          }
+          return block
+        }),
+      )
+
+      postData.body = newBlocks
+    }
   }
 </script>
 
