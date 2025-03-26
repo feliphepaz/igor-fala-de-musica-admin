@@ -8,7 +8,7 @@
       </label>
     </div>
 
-    <div class="spotify__album-id" v-if="showSpotifyWidget">
+    <div class="spotify__album-id" v-show="showSpotifyWidget">
       <label>
         <Text as="span" type="text-18" color="black">ID do álbum</Text>
       </label>
@@ -33,7 +33,7 @@
     </div>
 
     <iframe
-      v-if="showSpotifyWidget && hasSpotifyWidget"
+      v-show="showSpotifyWidget && hasSpotifyWidget"
       style="border-radius: 12px; max-width: 800px"
       :src="iframeSrc"
       width="100%"

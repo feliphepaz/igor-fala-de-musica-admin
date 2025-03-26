@@ -12,7 +12,7 @@
       </Text>
     </div>
 
-    <div class="file__preview" v-if="imagePreview">
+    <div class="file__preview" v-show="imagePreview">
       <img :class="`-${type}`" :src="imagePreview" alt="Prévia da imagem" />
     </div>
 

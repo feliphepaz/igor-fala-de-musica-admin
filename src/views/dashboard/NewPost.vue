@@ -72,7 +72,10 @@
           <BodyBuilder @change-body="(body) => (post.body = body)" />
         </div>
 
-        <div class="new-post__wrapper__form__review">
+        <div
+          v-show="post.category === 'critica'"
+          class="new-post__wrapper__form__review"
+        >
           <Text class="form-title" as="h2" type="title" color="cherry">
             Crítica
           </Text>
@@ -107,10 +110,13 @@
   import BodyBuilder from '@/components/BodyBuilder.vue'
   import Review from '@/components/Review.vue'
   import Spotify from '@/components/Spotify.vue'
+  import Swal from 'sweetalert2'
 
   import useImages from '@/composables/images'
+  import usePosts from '@/composables/posts'
 
   const { uploadImage } = useImages()
+  const { insertPost } = usePosts()
 
   const categories = [
     {
@@ -153,18 +159,50 @@
     },
   })
 
+  function toSlug(string: string) {
+    return string
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/--+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '')
+  }
+
   async function submit() {
-    let postData: any = post
+    try {
+      Swal.fire({
+        title: 'Postando',
+        text: 'Aguarde uns segundinhos.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      })
 
-    const hero = postData.images[0]
-    const thumbnail = postData.images[1]
+      let postData: any = post
 
-    if (hero.file && thumbnail.file) {
+      const hero = postData.images[0]
+      const thumbnail = postData.images[1]
+
+      if (
+        !postData.title ||
+        !postData.subtitle ||
+        !postData.category ||
+        !hero.file ||
+        !thumbnail.file ||
+        !postData.body
+      )
+        throw new Error('Empty fields')
+
+      if (postData.category === 'critica' && !postData.review)
+        throw new Error('Empty fields')
+
       postData.images[0].file = await uploadImage(hero.file, 'heros')
       postData.images[1].file = await uploadImage(thumbnail.file, 'thumbnails')
-    }
 
-    if (postData.body) {
       const newBlocks = await Promise.all(
         postData.body.map(async (block: any) => {
           if (block.type === 'photo') {
@@ -175,6 +213,40 @@
       )
 
       postData.body = newBlocks
+      postData.slug = toSlug(postData.title)
+      insertPost(postData)
+
+      Swal.fire({
+        title: 'Postado!',
+        text: 'Tudo certo com o seu post.',
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        didOpen: () => {
+          Swal.hideLoading()
+        },
+      })
+    } catch (error: any) {
+      if (error.message === 'Empty fields') {
+        Swal.fire({
+          title: 'Erro!',
+          text: 'Todos os campos precisam estar preenchidos.',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          didOpen: () => {
+            Swal.hideLoading()
+          },
+        })
+      } else {
+        Swal.fire({
+          title: 'Erro!',
+          text: 'Houve algum erro durante a requisição. Tente novamente.',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          didOpen: () => {
+            Swal.hideLoading()
+          },
+        })
+      }
     }
   }
 </script>

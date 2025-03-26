@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="review__album__albums" v-if="albums.length">
+      <div class="review__album__albums" v-show="albums.length">
         <Select
           name="albums"
           :options="albums"
@@ -35,7 +35,7 @@
         </Select>
       </div>
 
-      <div class="review__album__year" v-if="albums.length">
+      <div class="review__album__year" v-show="albums.length">
         <SmallField
           name="year"
           placeholder="Digite o ano de lançamento"
