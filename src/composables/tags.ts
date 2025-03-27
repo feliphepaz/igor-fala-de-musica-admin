@@ -12,6 +12,12 @@ export default function useTags() {
     tags.value = data as []
   }
 
+  async function insertTag(tag: Tag) {
+    const { error } = await supabase.from('tags').insert(tag)
+
+    if (error) throw Error
+  }
+
   async function getTag(tag: string) {
     const { data, error } = await supabase.from('tags').select().eq('slug', tag)
 
@@ -36,6 +42,7 @@ export default function useTags() {
   return {
     tags,
     getTags,
+    insertTag,
     insertPostInTag,
   }
 }

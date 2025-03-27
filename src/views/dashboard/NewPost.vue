@@ -33,8 +33,8 @@
 
           <TagsChoice
             @change-tags="
-              (tags, hasNewTags, newTags) => {
-                post.tags = tags
+              (allTags, hasNewTags, newTags) => {
+                post.tags = allTags
                 tags.hasNewTags = hasNewTags
                 tags.newTags = newTags
               }
@@ -133,7 +133,7 @@
   import toSlug from '@/utils/toSlug'
 
   const { categories, getCategories, insertPostInCategory } = useCategories()
-  const { insertPostInTag } = useTags()
+  const { insertTag, insertPostInTag } = useTags()
 
   onMounted(async () => {
     await getCategories()
@@ -142,7 +142,12 @@
   const { uploadImage } = useImages()
   const { insertPost } = usePosts()
 
-  const tags = reactive({
+  type Tags = {
+    hasNewTags: boolean
+    newTags: Tag[]
+  }
+
+  const tags = reactive<Tags>({
     hasNewTags: false,
     newTags: [],
   })
@@ -216,9 +221,19 @@
       await insertPostInCategory(data.id, data.category)
 
       if (postData.tags) {
-        postData.tags.forEach(async (tag: any) => {
-          await Promise.all([insertPostInTag(data.id, tag)])
-        })
+        if (tags.hasNewTags) {
+          const filteredTags = tags.newTags.filter((tag) =>
+            postData.tags.includes(tag.slug),
+          )
+
+          for (const tag of filteredTags) {
+            await insertTag(tag)
+          }
+        }
+
+        for (const tag of postData.tags) {
+          await insertPostInTag(data.id, tag)
+        }
       }
 
       Swal.fire({

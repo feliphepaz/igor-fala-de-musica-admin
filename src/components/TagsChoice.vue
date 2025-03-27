@@ -58,7 +58,7 @@
   const allTags: ComputedRef = computed(() =>
     newTags.value.length ? [...newTags.value, ...tags.value] : tags.value,
   )
-  const hasNewTags = computed(() => newTags.value.length)
+  const hasNewTags = computed(() => (newTags.value.length ? true : false))
 
   onMounted(async () => {
     await getTags()
