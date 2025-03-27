@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue'
+  import { reactive, onMounted } from 'vue'
 
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
@@ -115,27 +115,16 @@
   import useImages from '@/composables/images'
   import usePosts from '@/composables/posts'
 
+  import useCategories from '@/composables/categories'
+
+  const { categories, getCategories, insertPostInCategory } = useCategories()
+
+  onMounted(async () => {
+    await getCategories()
+  })
+
   const { uploadImage } = useImages()
   const { insertPost } = usePosts()
-
-  const categories = [
-    {
-      title: 'Devaneio',
-      slug: 'devaneio',
-    },
-    {
-      title: 'Lista',
-      slug: 'lista',
-    },
-    {
-      title: 'Crítica',
-      slug: 'critica',
-    },
-    {
-      title: 'Playlist',
-      slug: 'playlist',
-    },
-  ]
 
   const post = reactive<Post>({
     title: '',
@@ -214,7 +203,9 @@
 
       postData.body = newBlocks
       postData.slug = toSlug(postData.title)
-      insertPost(postData)
+
+      const data = await insertPost(postData)
+      await insertPostInCategory(data.id, data.category)
 
       Swal.fire({
         title: 'Postado!',
