@@ -20,6 +20,7 @@
           id="album-id"
           placeholder="Digite o ID do álbum"
           v-model="albumId"
+          @keyup.enter="generateSpotifyWidget"
         />
 
         <button

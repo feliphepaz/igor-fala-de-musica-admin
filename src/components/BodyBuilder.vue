@@ -260,6 +260,15 @@
           line-height: 160%;
           letter-spacing: 0.2px;
 
+          &::-webkit-scrollbar {
+            width: 4px;
+            background: rgba(0, 0, 0, 0.1);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: $color-white;
+          }
+
           @include tablet {
             font-size: 18px;
           }
