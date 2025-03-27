@@ -50,12 +50,13 @@
   import Text from '@/components/Text.vue'
   import Swal from 'sweetalert2'
 
-  const showSpotifyWidget = ref(false)
-  const albumId = ref('')
   const iframeSrc = ref('')
   const hasSpotifyWidget = ref(false)
 
   const emit = defineEmits(['changeSpotify'])
+
+  const showSpotifyWidget = defineModel('embed')
+  const albumId = defineModel('id')
 
   watch([showSpotifyWidget, albumId], ([newShowSpotifyWidget, newAlbumId]) => {
     emit('changeSpotify', {

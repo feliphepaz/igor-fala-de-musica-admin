@@ -6,8 +6,6 @@ export default function usePosts() {
 
     if (error) throw Error
 
-    console.log(data)
-
     return data[0]
   }
 

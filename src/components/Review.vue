@@ -13,6 +13,7 @@
             id="album"
             placeholder="Pesquise um álbum"
             v-model="albumSearched"
+            @keyup.enter="searchAlbum"
           />
 
           <button
@@ -123,6 +124,7 @@
       )
       const resolve = await response.json()
       albums.value = resolve.results.albummatches.album
+      Swal.close()
     } catch (error: any) {
       if (error.message === 'Empty field') {
         Swal.fire({
@@ -139,8 +141,6 @@
           confirmButtonText: 'Ok',
         })
       }
-    } finally {
-      Swal.close()
     }
   }
 </script>

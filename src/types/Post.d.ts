@@ -4,6 +4,19 @@ type Tag = {
   slug: string
 }
 
+type Review = {
+  album: {
+    cover: string
+    year?: string
+    name: string
+    artist: string
+  }
+  rating: {
+    score: string
+    text: string
+  }
+}
+
 type Post = {
   title: string
   subtitle: string
@@ -20,18 +33,7 @@ type Post = {
     },
   ]
   body: Block[]
-  review?: {
-    album: {
-      cover: string
-      year?: string
-      name: string
-      artist: string
-    }
-    rating: {
-      score: string
-      text: string
-    }
-  }
+  review?: Review
   spotify: {
     embed: boolean
     id: string | null

@@ -21,7 +21,12 @@
 
     <div class="review-card__rating">
       <div class="review-card__rating__score">
-        <input type="text" v-model="score" @input="(e) => maskScore(e)" />
+        <input
+          :disabled="disableChangeScore"
+          type="text"
+          v-model="score"
+          @input="(e) => maskScore(e)"
+        />
       </div>
 
       <Text class="review-card__rating__text" type="title" color="cherry">
@@ -40,6 +45,7 @@
     band: string
     year?: string
     cover?: string
+    disableChangeScore?: boolean
   }
 
   defineProps<Props>()

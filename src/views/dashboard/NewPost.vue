@@ -131,6 +131,7 @@
   import usePosts from '@/composables/posts'
   import useTags from '@/composables/tags'
   import useCategories from '@/composables/categories'
+  import useAuth from '@/composables/auth'
 
   import toSlug from '@/utils/toSlug'
 
@@ -143,6 +144,7 @@
 
   const { uploadImage } = useImages()
   const { insertPost } = usePosts()
+  const { getSession } = useAuth()
 
   type Tags = {
     hasNewTags: boolean
@@ -204,6 +206,8 @@
       if (postData.category === 'critica' && !postData.review)
         throw new Error('Empty fields')
 
+      const session = await getSession()
+
       postData.images[0].file = await uploadImage(hero.file, 'heros')
       postData.images[1].file = await uploadImage(thumbnail.file, 'thumbnails')
 
@@ -216,6 +220,7 @@
         }),
       )
 
+      postData.author = session?.user.id
       postData.body = newBlocks
       postData.slug = toSlug(postData.title)
 

@@ -95,7 +95,24 @@
             Crítica
           </Text>
 
-          <Review @change-review="(review) => (post.review = review)" />
+          <Review
+            @change-review="
+              (review) => {
+                editAlbum = true
+                post.review = review
+              }
+            "
+          />
+
+          <ReviewCard
+            style="margin-top: 20px"
+            v-if="!editAlbum && post.review"
+            :album="post.review.album.name"
+            :band="post.review.album.artist"
+            :year="post.review.album.year"
+            :cover="post.review.album.cover"
+            :disable-change-score="true"
+          />
         </div>
 
         <div class="edit-post__wrapper__form__spotify">
@@ -103,7 +120,11 @@
             Spotify
           </Text>
 
-          <Spotify @change-spotify="(spotify) => (post.spotify = spotify)" />
+          <Spotify
+            v-model:embed="post.spotify.embed"
+            v-model:id="post.spotify.id"
+            @change-spotify="(spotify) => (post.spotify = spotify)"
+          />
         </div>
 
         <button
@@ -111,7 +132,7 @@
           @click.prevent="submit"
           type="button"
         >
-          <Text type="title" color="cherry">Postar!</Text>
+          <Text type="title" color="cherry">Salvar!</Text>
         </button>
       </form>
     </div>
@@ -119,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, onMounted } from 'vue'
+  import { ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
 
   import Text from '@/components/Text.vue'
@@ -129,6 +150,7 @@
   import TagsChoice from '@/components/TagsChoice.vue'
   import BodyBuilder from '@/components/BodyBuilder.vue'
   import Review from '@/components/Review.vue'
+  import ReviewCard from '@/components/ReviewCard.vue'
   import Spotify from '@/components/Spotify.vue'
   import Swal from 'sweetalert2'
 
@@ -150,6 +172,7 @@
     newTags: Tag[]
   }
 
+  const editAlbum = ref(false)
   const tags = reactive<Tags>({
     hasNewTags: false,
     newTags: [],
@@ -170,6 +193,7 @@
       },
     ],
     body: [],
+    review: undefined,
     spotify: {
       embed: false,
       id: null,
