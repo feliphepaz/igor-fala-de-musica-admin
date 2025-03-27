@@ -24,6 +24,7 @@
 
         <File
           v-if="block.type === 'photo'"
+          :initial-image-preview="blocks[index].file"
           @change-file="(file) => editBlock(index, undefined, undefined, file)"
         />
 
@@ -97,7 +98,13 @@
     description: string
   }
 
-  const blocks = ref<Block[]>([])
+  interface Props {
+    initialBlocks: Block[]
+  }
+
+  const { initialBlocks } = defineProps<Props>()
+
+  const blocks = ref<Block[]>(initialBlocks)
 
   const emit = defineEmits(['changeBody'])
 
@@ -131,6 +138,14 @@
   watch(blocks.value, (newBlocks) => {
     emit('changeBody', newBlocks)
   })
+
+  watch(
+    () => initialBlocks,
+    (newInitialBlocks) => {
+      blocks.value = newInitialBlocks
+    },
+    { immediate: true },
+  )
 
   function addBlock(type: 'paragraph' | 'highlight' | 'photo' | 'youtube') {
     if (type === 'youtube') return

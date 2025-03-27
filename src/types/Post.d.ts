@@ -19,7 +19,7 @@ type Post = {
       file: File | null
     },
   ]
-  body: Block[] | null
+  body: Block[]
   review?: {
     album: {
       cover: string

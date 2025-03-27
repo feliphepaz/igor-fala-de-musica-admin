@@ -48,7 +48,7 @@
 
   interface Props {
     type?: 'hero' | 'thumbnail' | 'photo'
-    initialImagePreview?: string
+    initialImagePreview?: any
     initialCopyright?: string
     initialDescription?: string
   }
@@ -73,20 +73,6 @@
     return '800 x 460px'
   })
 
-  function getImage(target: EventTarget) {
-    const fileRaw = (target as HTMLInputElement).files?.[0]
-    const reader = new FileReader()
-
-    reader.onload = () => {
-      imagePreview.value = reader.result as string
-    }
-
-    if (fileRaw) {
-      file.value = fileRaw
-      reader.readAsDataURL(fileRaw)
-    }
-  }
-
   watch(
     [file, copyright, description],
     ([newFile, newCopyright, newDescription]) => {
@@ -102,6 +88,32 @@
     },
     { immediate: true },
   )
+
+  watch(
+    () => initialImagePreview,
+    (newInitialImagePreview) => {
+      if (newInitialImagePreview instanceof File) {
+        imagePreview.value = URL.createObjectURL(newInitialImagePreview)
+      } else {
+        imagePreview.value = newInitialImagePreview
+      }
+    },
+    { immediate: true },
+  )
+
+  function getImage(target: EventTarget) {
+    const fileRaw = (target as HTMLInputElement).files?.[0]
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      imagePreview.value = reader.result as string
+    }
+
+    if (fileRaw) {
+      file.value = fileRaw
+      reader.readAsDataURL(fileRaw)
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

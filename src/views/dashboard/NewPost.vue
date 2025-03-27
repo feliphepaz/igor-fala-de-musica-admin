@@ -77,7 +77,10 @@
             </Text>
           </div>
 
-          <BodyBuilder @change-body="(body) => (post.body = body)" />
+          <BodyBuilder
+            :initial-blocks="post.body"
+            @change-body="(body) => (post.body = body)"
+          />
         </div>
 
         <div
@@ -127,7 +130,6 @@
   import useImages from '@/composables/images'
   import usePosts from '@/composables/posts'
   import useTags from '@/composables/tags'
-
   import useCategories from '@/composables/categories'
 
   import toSlug from '@/utils/toSlug'
@@ -166,7 +168,7 @@
         file: null,
       },
     ],
-    body: null,
+    body: [],
     spotify: {
       embed: false,
       id: null,

@@ -14,7 +14,7 @@ export default function useImages() {
 
     if (error) throw Error
 
-    return data.path
+    return `${import.meta.env.VITE_IMAGE_DOMAIN}/storage/v1/object/public/${bucket}//${data.path}`
   }
 
   return {
