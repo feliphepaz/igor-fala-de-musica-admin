@@ -32,9 +32,11 @@ export default function useCategories() {
   async function insertPostInCategory(postId: number, category: string) {
     const categoryData = await getCategory(category)
 
+    const posts = categoryData.posts ?? []
+
     const { error } = await supabase
       .from('categories')
-      .update({ posts: [...categoryData.posts, postId] })
+      .update({ posts: [...posts, postId] })
       .eq('slug', category)
 
     if (error) throw Error

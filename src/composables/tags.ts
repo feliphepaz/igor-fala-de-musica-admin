@@ -2,12 +2,6 @@ import { supabase } from '@/lib/supabase'
 import { ref } from 'vue'
 
 export default function useTags() {
-  type Tag = {
-    id: number
-    title: string
-    slug: string
-  }
-
   const tags = ref<Tag[]>([])
 
   async function getTags() {
@@ -18,8 +12,30 @@ export default function useTags() {
     tags.value = data as []
   }
 
+  async function getTag(tag: string) {
+    const { data, error } = await supabase.from('tags').select().eq('slug', tag)
+
+    if (error) throw Error
+
+    return data[0]
+  }
+
+  async function insertPostInTag(postId: number, tag: string) {
+    const tagData = await getTag(tag)
+
+    const tags = tagData.posts ?? []
+
+    const { error } = await supabase
+      .from('tags')
+      .update({ posts: [...tags, postId] })
+      .eq('slug', tag)
+
+    if (error) throw Error
+  }
+
   return {
     tags,
     getTags,
+    insertPostInTag,
   }
 }

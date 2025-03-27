@@ -31,7 +31,15 @@
             Categoria
           </Select>
 
-          <TagsChoice @change-tags="(tags) => (post.tags = tags)" />
+          <TagsChoice
+            @change-tags="
+              (tags, hasNewTags, newTags) => {
+                post.tags = tags
+                tags.hasNewTags = hasNewTags
+                tags.newTags = newTags
+              }
+            "
+          />
         </div>
 
         <div class="new-post__wrapper__form__images">
@@ -91,7 +99,11 @@
           <Spotify @change-spotify="(spotify) => (post.spotify = spotify)" />
         </div>
 
-        <button class="new-post__wrapper__form__submit" @click.prevent="submit">
+        <button
+          class="new-post__wrapper__form__submit"
+          @click.prevent="submit"
+          type="button"
+        >
           <Text type="title" color="cherry">Postar!</Text>
         </button>
       </form>
@@ -114,10 +126,14 @@
 
   import useImages from '@/composables/images'
   import usePosts from '@/composables/posts'
+  import useTags from '@/composables/tags'
 
   import useCategories from '@/composables/categories'
 
+  import toSlug from '@/utils/toSlug'
+
   const { categories, getCategories, insertPostInCategory } = useCategories()
+  const { insertPostInTag } = useTags()
 
   onMounted(async () => {
     await getCategories()
@@ -126,6 +142,10 @@
   const { uploadImage } = useImages()
   const { insertPost } = usePosts()
 
+  const tags = reactive({
+    hasNewTags: false,
+    newTags: [],
+  })
   const post = reactive<Post>({
     title: '',
     subtitle: '',
@@ -147,18 +167,6 @@
       id: null,
     },
   })
-
-  function toSlug(string: string) {
-    return string
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/--+/g, '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '')
-  }
 
   async function submit() {
     try {
@@ -206,6 +214,12 @@
 
       const data = await insertPost(postData)
       await insertPostInCategory(data.id, data.category)
+
+      if (postData.tags) {
+        postData.tags.forEach(async (tag: any) => {
+          await Promise.all([insertPostInTag(data.id, tag)])
+        })
+      }
 
       Swal.fire({
         title: 'Postado!',

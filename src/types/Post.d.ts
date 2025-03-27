@@ -1,3 +1,9 @@
+type Tag = {
+  id?: number
+  title: string
+  slug: string
+}
+
 type Post = {
   title: string
   subtitle: string

@@ -11,16 +11,22 @@
           type="text"
           id="tag"
           placeholder="Adicione uma nova tag"
+          v-model="newTag"
+          @keyup.enter="addTag"
         />
 
-        <button class="tags-choice__wrapper__add__submit" type="button">
+        <button
+          class="tags-choice__wrapper__add__submit"
+          type="button"
+          @click="addTag"
+        >
           +
         </button>
       </div>
 
       <div class="tags-choice__wrapper__list">
         <Tag
-          v-for="tag in tags"
+          v-for="tag in allTags"
           :key="tag.id"
           :slug="tag.slug"
           @change-tag="(tag, selected) => manageTags(tag, selected)"
@@ -33,22 +39,50 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted, type ComputedRef } from 'vue'
 
   import Tag from '@/components/Tag.vue'
   import Text from '@/components/Text.vue'
+  import Swal from 'sweetalert2'
 
   import useTags from '@/composables/tags'
+
+  import toSlug from '@/utils/toSlug'
 
   const { tags, getTags } = useTags()
 
   const activeTags = ref<string[]>([])
+  const newTag = ref('')
+  const newTags = ref<Tag[]>([])
+
+  const allTags: ComputedRef = computed(() =>
+    newTags.value.length ? [...newTags.value, ...tags.value] : tags.value,
+  )
+  const hasNewTags = computed(() => newTags.value.length)
 
   onMounted(async () => {
     await getTags()
   })
 
   const emit = defineEmits(['changeTags'])
+
+  function addTag() {
+    if (newTag.value === '') {
+      return Swal.fire({
+        title: 'Erro!',
+        text: 'O campo de tag não pode estar vazio.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      })
+    }
+
+    newTags.value.push({
+      title: newTag.value,
+      slug: toSlug(newTag.value),
+    })
+
+    newTag.value = ''
+  }
 
   function manageTags(tag: string, selected: boolean) {
     if (selected) {
@@ -62,7 +96,7 @@
       }
     }
 
-    emit('changeTags', activeTags.value)
+    emit('changeTags', activeTags.value, hasNewTags, newTags)
   }
 </script>
 
