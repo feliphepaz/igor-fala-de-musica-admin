@@ -40,8 +40,8 @@
         <SmallField
           name="year"
           placeholder="Digite o ano de lançamento"
-          variation="big-label"
           v-model="year"
+          big-label
         >
           Ano do álbum
         </SmallField>

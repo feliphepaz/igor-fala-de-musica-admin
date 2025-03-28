@@ -1,7 +1,9 @@
 <template>
   <main class="edit-post">
     <div class="edit-post__wrapper dashboard-container">
-      <Text as="h1" type="title-h1" color="cherry">Editar post</Text>
+      <Text as="h1" type="title-h1" color="cherry">
+        Editar post #{{ $route.params.id }}
+      </Text>
 
       <form class="edit-post__wrapper__form">
         <Field
@@ -91,7 +93,7 @@
             :band="post.review.album.artist"
             :year="post.review.album.year"
             :cover="post.review.album.cover"
-            :disable-change-score="true"
+            disable-change-score
           />
         </div>
 

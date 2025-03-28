@@ -21,7 +21,7 @@
   interface Props {
     name: string
     placeholder: string
-    type: 'title' | 'subtitle'
+    type: 'title' | 'subtitle' | 'biography'
   }
 
   const { type } = defineProps<Props>()
@@ -56,6 +56,23 @@
         font-weight: $weight-regular;
         font-size: 18px;
         line-height: 140%;
+      }
+
+      &.-biography {
+        font-family: $font-sans;
+        font-weight: $weight-regular;
+        font-size: 14px;
+        line-height: 120%;
+        letter-spacing: 0.2px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $color-white;
       }
 
       &::placeholder {

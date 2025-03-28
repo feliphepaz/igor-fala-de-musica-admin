@@ -10,7 +10,7 @@
         <button
           class="body-builder__blocks__block__delete"
           type="button"
-          @click="delBlock(index)"
+          @click="deleteBlock(index)"
         >
           <CloseIcon />
         </button>
@@ -203,7 +203,7 @@
     }
   }
 
-  function delBlock(index: number) {
+  function deleteBlock(index: number) {
     blocks.value.splice(index, 1)
   }
 </script>

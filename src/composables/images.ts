@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default function useImages() {
   async function uploadImage(
     file: File,
-    bucket: 'heros' | 'thumbnails' | 'photos',
+    bucket: 'heros' | 'thumbnails' | 'photos' | 'avatars',
   ) {
     const path = `${file.name.replace(/\.(jpg|png|jpeg)/gi, '')}_${uuidv4()}`
 
