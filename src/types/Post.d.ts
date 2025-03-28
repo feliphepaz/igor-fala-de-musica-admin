@@ -44,6 +44,7 @@ type PostGetted = {
   id: number
   created_at: string
   title: string
+  slug: string
   subtitle: string
   category: string
   tags: string[] | null

@@ -13,7 +13,11 @@
     </div>
 
     <div class="file__preview" v-show="imagePreview">
-      <img :class="`-${type}`" :src="imagePreview" alt="Prévia da imagem" />
+      <img
+        :class="`-${type}`"
+        :src="imagePreview as string"
+        alt="Prévia da imagem"
+      />
     </div>
 
     <div class="file__texts" v-if="type === 'photo' && imagePreview">
@@ -48,7 +52,7 @@
 
   interface Props {
     type?: 'hero' | 'thumbnail' | 'photo'
-    initialImagePreview?: any
+    initialImagePreview?: string | File
     initialCopyright?: string
     initialDescription?: string
   }

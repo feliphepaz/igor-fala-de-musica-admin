@@ -30,7 +30,7 @@
 
             <File
               type="hero"
-              :initial-image-preview="post.images[0].file"
+              :initial-image-preview="post.images[0].file as string"
               @change-file="(file) => (post.images[0].file = file)"
             />
           </div>
@@ -42,7 +42,7 @@
 
             <File
               type="thumbnail"
-              :initial-image-preview="post.images[1].file"
+              :initial-image-preview="post.images[1].file as string"
               @change-file="(file) => (post.images[1].file = file)"
             />
           </div>
@@ -143,10 +143,33 @@
   const { uploadImage } = useImages()
   const { getPost, updatePost } = usePosts()
 
-  let postFounded: any = []
+  let postFounded: PostGetted = {
+    id: 0,
+    created_at: '',
+    title: '',
+    subtitle: '',
+    slug: '',
+    category: '',
+    tags: null,
+    images: [
+      {
+        type: 'hero',
+        file: '',
+      },
+      {
+        type: 'thumbnail',
+        file: '',
+      },
+    ],
+    body: [],
+    spotify: {
+      embed: false,
+      id: null,
+    },
+  }
   const editAlbum = ref(false)
   const modifications = ref(0)
-  const post = reactive<Post>({
+  const post = reactive<Post | PostGetted>({
     title: '',
     subtitle: '',
     category: '',
@@ -183,6 +206,10 @@
     modifications.value++
   })
 
+  function isFile(file: any): file is File {
+    return file instanceof File
+  }
+
   async function submit() {
     try {
       Swal.fire({
@@ -217,8 +244,8 @@
       }
 
       const newBlocks = await Promise.all(
-        postData.body.map(async (block: any) => {
-          if (block.type === 'photo' && block.file) {
+        postData.body.map(async (block: Block) => {
+          if (block.type === 'photo' && block.file && isFile(block.file)) {
             block.file = await uploadImage(block.file, 'photos')
           }
           return block

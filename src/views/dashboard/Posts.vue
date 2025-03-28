@@ -6,7 +6,7 @@
         <Button as-link to="/dashboard/posts/novo-post">Novo post</Button>
       </div>
 
-      <PostsGrid :posts="posts" @refresh-posts="fetchPosts" />
+      <PostsGrid :posts="posts" @refresh-posts="getPosts" />
     </div>
   </main>
 </template>
@@ -25,10 +25,10 @@
   const { posts, getPostsByAuthor } = usePosts()
 
   onMounted(async () => {
-    await fetchPosts()
+    await getPosts()
   })
 
-  async function fetchPosts() {
+  async function getPosts() {
     const session = await getSession()
     return await getPostsByAuthor(session!.user.id)
   }

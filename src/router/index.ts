@@ -6,6 +6,7 @@ import Dashboard from '@/views/dashboard/index.vue'
 import Posts from '@/views/dashboard/Posts.vue'
 import NewPost from '@/views/dashboard/NewPost.vue'
 import EditPost from '@/views/dashboard/EditPost.vue'
+import Profile from '@/views/dashboard/Profile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
           path: '/dashboard/posts/novo-post',
           name: 'new-post',
           component: NewPost,
+        },
+        {
+          path: '/dashboard/perfil',
+          name: 'profile',
+          component: Profile,
         },
       ],
     },

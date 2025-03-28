@@ -180,6 +180,10 @@
     },
   })
 
+  function isFile(file: any): file is File {
+    return file instanceof File
+  }
+
   async function submit() {
     try {
       Swal.fire({
@@ -214,8 +218,8 @@
       thumbnail.file = await uploadImage(thumbnail.file, 'thumbnails')
 
       const newBlocks = await Promise.all(
-        postData.body.map(async (block: any) => {
-          if (block.type === 'photo' && block.file) {
+        postData.body.map(async (block: Block) => {
+          if (block.type === 'photo' && block.file && isFile(block.file)) {
             block.file = await uploadImage(block.file, 'photos')
           }
           return block

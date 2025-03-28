@@ -38,7 +38,7 @@
   import Text from '@/components/Text.vue'
 
   interface Props {
-    posts: any
+    posts: PostGetted[]
     pagination?: Pagination
     columns?: number
   }
