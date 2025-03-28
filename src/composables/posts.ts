@@ -17,8 +17,21 @@ export default function usePosts() {
     return data[0]
   }
 
+  async function updatePost(post: any, id: number) {
+    const { data, error } = await supabase
+      .from('posts')
+      .update(post)
+      .eq('id', id)
+      .select()
+
+    if (error) throw Error
+
+    return data[0]
+  }
+
   return {
     getPost,
     insertPost,
+    updatePost,
   }
 }

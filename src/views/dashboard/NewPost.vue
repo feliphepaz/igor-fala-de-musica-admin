@@ -207,13 +207,12 @@
         throw new Error('Empty fields')
 
       const session = await getSession()
-
-      postData.images[0].file = await uploadImage(hero.file, 'heros')
-      postData.images[1].file = await uploadImage(thumbnail.file, 'thumbnails')
+      hero.file = await uploadImage(hero.file, 'heros')
+      thumbnail.file = await uploadImage(thumbnail.file, 'thumbnails')
 
       const newBlocks = await Promise.all(
         postData.body.map(async (block: any) => {
-          if (block.type === 'photo') {
+          if (block.type === 'photo' && block.file) {
             block.file = await uploadImage(block.file, 'photos')
           }
           return block

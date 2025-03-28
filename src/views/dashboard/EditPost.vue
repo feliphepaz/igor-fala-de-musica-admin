@@ -22,26 +22,6 @@
           Subtítulo
         </Field>
 
-        <div class="edit-post__wrapper__form__options">
-          <Select
-            name="category"
-            :options="categories"
-            @change-select="(selected) => (post.category = selected)"
-          >
-            Categoria
-          </Select>
-
-          <TagsChoice
-            @change-tags="
-              (allTags, hasNewTags, newTags) => {
-                post.tags = allTags
-                tags.hasNewTags = hasNewTags
-                tags.newTags = newTags
-              }
-            "
-          />
-        </div>
-
         <div class="edit-post__wrapper__form__images">
           <div class="edit-post__wrapper__form__images__field">
             <Text class="form-title" as="h2" type="title" color="cherry">
@@ -131,6 +111,7 @@
           class="edit-post__wrapper__form__submit"
           @click.prevent="submit"
           type="button"
+          :disabled="modifications < 3"
         >
           <Text type="title" color="cherry">Salvar!</Text>
         </button>
@@ -140,14 +121,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted } from 'vue'
+  import { ref, reactive, onMounted, watch } from 'vue'
   import { useRoute } from 'vue-router'
 
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
   import File from '@/components/File.vue'
-  import Select from '@/components/Select.vue'
-  import TagsChoice from '@/components/TagsChoice.vue'
   import BodyBuilder from '@/components/BodyBuilder.vue'
   import Review from '@/components/Review.vue'
   import ReviewCard from '@/components/ReviewCard.vue'
@@ -156,27 +135,16 @@
 
   import useImages from '@/composables/images'
   import usePosts from '@/composables/posts'
-  import useTags from '@/composables/tags'
-  import useCategories from '@/composables/categories'
 
   import toSlug from '@/utils/toSlug'
 
   const route = useRoute()
   const { uploadImage } = useImages()
-  const { getPost, insertPost } = usePosts()
-  const { categories, getCategories, insertPostInCategory } = useCategories()
-  const { insertTag, insertPostInTag } = useTags()
+  const { getPost, updatePost } = usePosts()
 
-  type Tags = {
-    hasNewTags: boolean
-    newTags: Tag[]
-  }
-
+  let postFounded: any = []
   const editAlbum = ref(false)
-  const tags = reactive<Tags>({
-    hasNewTags: false,
-    newTags: [],
-  })
+  const modifications = ref(0)
   const post = reactive<Post>({
     title: '',
     subtitle: '',
@@ -201,17 +169,19 @@
   })
 
   onMounted(async () => {
-    const data = await getPost(+route.params.id)
+    postFounded = await getPost(+route.params.id)
 
-    Object.assign(post, data)
+    Object.assign(post, JSON.parse(JSON.stringify(postFounded)))
+  })
 
-    await getCategories()
+  watch(post, () => {
+    modifications.value++
   })
 
   async function submit() {
     try {
       Swal.fire({
-        title: 'Postando',
+        title: 'Salvando',
         text: 'Aguarde uns segundinhos.',
         allowOutsideClick: false,
         didOpen: () => {
@@ -227,22 +197,23 @@
       if (
         !postData.title ||
         !postData.subtitle ||
-        !postData.category ||
         !hero.file ||
         !thumbnail.file ||
         !postData.body
       )
         throw new Error('Empty fields')
 
-      if (postData.category === 'critica' && !postData.review)
-        throw new Error('Empty fields')
+      if (hero.file !== postFounded.images[0].file) {
+        hero.file = await uploadImage(hero.file, 'heros')
+      }
 
-      postData.images[0].file = await uploadImage(hero.file, 'heros')
-      postData.images[1].file = await uploadImage(thumbnail.file, 'thumbnails')
+      if (thumbnail.file !== postFounded.images[1].file) {
+        thumbnail.file = await uploadImage(thumbnail.file, 'thumbnails')
+      }
 
       const newBlocks = await Promise.all(
         postData.body.map(async (block: any) => {
-          if (block.type === 'photo') {
+          if (block.type === 'photo' && block.file) {
             block.file = await uploadImage(block.file, 'photos')
           }
           return block
@@ -252,27 +223,10 @@
       postData.body = newBlocks
       postData.slug = toSlug(postData.title)
 
-      const data = await insertPost(postData)
-      await insertPostInCategory(data.id, data.category)
-
-      if (postData.tags) {
-        if (tags.hasNewTags) {
-          const filteredTags = tags.newTags.filter((tag) =>
-            postData.tags.includes(tag.slug),
-          )
-
-          for (const tag of filteredTags) {
-            await insertTag(tag)
-          }
-        }
-
-        for (const tag of postData.tags) {
-          await insertPostInTag(data.id, tag)
-        }
-      }
+      await updatePost(postData, +route.params.id)
 
       Swal.fire({
-        title: 'Postado!',
+        title: 'Editado!',
         text: 'Tudo certo com o seu post.',
         icon: 'success',
         confirmButtonText: 'Ok',
@@ -330,21 +284,6 @@
           }
         }
 
-        &__options {
-          display: flex;
-          gap: 40px;
-
-          > div {
-            &:first-child {
-              width: 35%;
-            }
-
-            &:last-child {
-              width: 65%;
-            }
-          }
-        }
-
         &__images {
           display: flex;
           flex-direction: column;
@@ -386,7 +325,12 @@
           margin-top: 20px;
           transition: $transition-default;
 
-          &:hover {
+          &:disabled {
+            opacity: $opacity-40;
+            cursor: auto;
+          }
+
+          &:hover:not(:disabled) {
             background: $color-cherry;
 
             .text {
