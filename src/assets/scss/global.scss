@@ -222,6 +222,10 @@ svg {
   border-radius: $radius-20;
 }
 
+.swal2-actions {
+  gap: 10px;
+}
+
 .swal2-icon {
   margin: 20px auto 0 auto;
 }
@@ -263,4 +267,12 @@ svg {
   &:hover {
     opacity: $opacity-100;
   }
+}
+
+.swal2-confirm {
+  background: #bf212f;
+}
+
+.swal2-deny {
+  background: #006f3c;
 }

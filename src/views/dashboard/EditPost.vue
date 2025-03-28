@@ -122,7 +122,7 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, watch } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
 
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
@@ -139,6 +139,7 @@
   import toSlug from '@/utils/toSlug'
 
   const route = useRoute()
+  const router = useRouter()
   const { uploadImage } = useImages()
   const { getPost, updatePost } = usePosts()
 
@@ -171,7 +172,11 @@
   onMounted(async () => {
     postFounded = await getPost(+route.params.id)
 
-    Object.assign(post, JSON.parse(JSON.stringify(postFounded)))
+    if (postFounded) {
+      Object.assign(post, JSON.parse(JSON.stringify(postFounded)))
+    } else {
+      router.push('/dashboard/posts')
+    }
   })
 
   watch(post, () => {
@@ -232,6 +237,9 @@
         confirmButtonText: 'Ok',
         didOpen: () => {
           Swal.hideLoading()
+        },
+        didClose: () => {
+          router.push('/dashboard/posts')
         },
       })
     } catch (error: any) {

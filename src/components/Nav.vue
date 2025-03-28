@@ -4,24 +4,14 @@
       <Text as="span" type="text-18" variant="bold" color="black">
         Feliphe Paz
       </Text>
-      <Button @click="handleLogout">Sair!</Button>
+      <Button @click="handleLogout">Sair</Button>
     </div>
 
     <ul class="nav__menu">
       <li>
         <RouterLink
-          to="/dashboard"
-          :class="[{ '-is-active': $route.path === '/dashboard' }]"
-        >
-          <Text as="span" type="text-18" variant="bold" color="cherry">
-            Home
-          </Text>
-        </RouterLink>
-      </li>
-      <li>
-        <RouterLink
           to="/dashboard/posts"
-          :class="[{ '-is-active': $route.path === '/dashboard/posts' }]"
+          :class="[{ '-is-active': $route.path.includes('/posts') }]"
         >
           <Text as="span" type="text-18" variant="bold" color="cherry">
             Posts

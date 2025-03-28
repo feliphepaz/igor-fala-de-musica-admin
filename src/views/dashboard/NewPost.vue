@@ -116,6 +116,7 @@
 
 <script setup lang="ts">
   import { reactive, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
 
   import Text from '@/components/Text.vue'
   import Field from '@/components/Field.vue'
@@ -134,6 +135,8 @@
   import useAuth from '@/composables/auth'
 
   import toSlug from '@/utils/toSlug'
+
+  const router = useRouter()
 
   const { categories, getCategories, insertPostInCategory } = useCategories()
   const { insertTag, insertPostInTag } = useTags()
@@ -219,7 +222,7 @@
         }),
       )
 
-      postData.author = session?.user.id
+      postData.author = session!.user.id
       postData.body = newBlocks
       postData.slug = toSlug(postData.title)
 
@@ -249,6 +252,9 @@
         confirmButtonText: 'Ok',
         didOpen: () => {
           Swal.hideLoading()
+        },
+        didClose: () => {
+          router.push('/dashboard/posts')
         },
       })
     } catch (error: any) {

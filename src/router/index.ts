@@ -3,7 +3,6 @@ import useAuth from '@/composables/auth'
 
 import Home from '@/views/Home.vue'
 import Dashboard from '@/views/dashboard/index.vue'
-import Welcome from '@/views/dashboard/Welcome.vue'
 import Posts from '@/views/dashboard/Posts.vue'
 import NewPost from '@/views/dashboard/NewPost.vue'
 import EditPost from '@/views/dashboard/EditPost.vue'
@@ -21,11 +20,6 @@ const router = createRouter({
       name: 'dashboard',
       component: Dashboard,
       children: [
-        {
-          path: '/dashboard',
-          name: 'welcome',
-          component: Welcome,
-        },
         {
           path: '/dashboard/posts',
           name: 'posts',
