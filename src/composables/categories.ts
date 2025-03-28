@@ -42,9 +42,23 @@ export default function useCategories() {
     if (error) throw Error
   }
 
+  async function deletePostInCategory(postId: number, category: string) {
+    const categoryData = await getCategory(category)
+
+    const posts = categoryData.posts ?? []
+
+    const { error } = await supabase
+      .from('categories')
+      .update({ posts: posts.filter((post: number) => post !== postId) })
+      .eq('slug', category)
+
+    if (error) throw Error
+  }
+
   return {
     categories,
     getCategories,
     insertPostInCategory,
+    deletePostInCategory,
   }
 }

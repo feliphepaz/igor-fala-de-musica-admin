@@ -29,11 +29,24 @@ export default function useTags() {
   async function insertPostInTag(postId: number, tag: string) {
     const tagData = await getTag(tag)
 
-    const tags = tagData.posts ?? []
+    const posts = tagData.posts ?? []
 
     const { error } = await supabase
       .from('tags')
-      .update({ posts: [...tags, postId] })
+      .update({ posts: [...posts, postId] })
+      .eq('slug', tag)
+
+    if (error) throw Error
+  }
+
+  async function deletePostInTag(postId: number, tag: string) {
+    const tagData = await getTag(tag)
+
+    const posts = tagData.posts ?? []
+
+    const { error } = await supabase
+      .from('tags')
+      .update({ posts: posts.filter((post: number) => post !== postId) })
       .eq('slug', tag)
 
     if (error) throw Error
@@ -44,5 +57,6 @@ export default function useTags() {
     getTags,
     insertTag,
     insertPostInTag,
+    deletePostInTag,
   }
 }
