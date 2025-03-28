@@ -98,6 +98,13 @@
     description: string
   }
 
+  type Tool = {
+    name: string
+    type: BlockType
+    description: string
+    icon: any
+  }
+
   interface Props {
     initialBlocks: Block[]
   }
