@@ -11,9 +11,9 @@ type Review = {
     name: string
     artist: string
   }
-  rating: {
+  review: {
     score: string
-    text: string
+    ratingText: string
   }
 }
 
