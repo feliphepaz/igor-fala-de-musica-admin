@@ -5,9 +5,11 @@
         <input
           v-for="(_, index) in verses"
           :key="index"
+          ref="verseInputs"
           class="highlight__content__verses__verse"
           type="text"
           v-model="verses[index]"
+          @keyup.enter="addVerse"
         />
 
         <button
@@ -32,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref, watch, nextTick } from 'vue'
   import SmallField from '@/components/SmallField.vue'
 
   interface Props {
@@ -50,6 +52,7 @@
   const verses = ref(initialVerses)
   const music = ref(initialMusic)
   const band = ref(initialBand)
+  const verseInputs = ref<HTMLInputElement[]>([])
 
   const emit = defineEmits(['changeHighlight'])
 
@@ -67,6 +70,13 @@
 
   function addVerse() {
     verses.value.push('')
+
+    nextTick(() => {
+      const lastInput = verseInputs.value[verses.value.length - 1]
+      if (lastInput) {
+        lastInput.focus()
+      }
+    })
   }
 </script>
 
