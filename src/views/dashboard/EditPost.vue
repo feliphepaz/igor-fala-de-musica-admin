@@ -24,6 +24,14 @@
           Subtítulo
         </Field>
 
+        <div class="edit-post__wrapper__form__checkbox">
+          <input type="checkbox" id="highlight" v-model="post.highlight" />
+
+          <label for="highlight">
+            <Text as="span" type="text-16" color="black">Destacar post</Text>
+          </label>
+        </div>
+
         <div class="edit-post__wrapper__form__images">
           <div class="edit-post__wrapper__form__images__field">
             <Text class="form-title" as="h2" type="title" color="cherry">
@@ -328,6 +336,18 @@
             background: $color-igor;
             opacity: $opacity-60;
             margin-top: 6px;
+          }
+        }
+
+        &__checkbox {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          input {
+            width: 20px;
+            height: 20px;
+            margin: 0;
           }
         }
 
