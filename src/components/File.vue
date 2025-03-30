@@ -20,7 +20,7 @@
       />
     </div>
 
-    <div class="file__texts" v-if="type === 'photo' && imagePreview">
+    <div class="file__texts" v-if="type !== 'thumbnail' && imagePreview">
       <SmallField
         :name="`copyright-${Math.floor(Math.random() * 100)}`"
         placeholder="Exemplo: Foto por David McClister."
@@ -53,8 +53,8 @@
   interface Props {
     type?: 'hero' | 'thumbnail' | 'photo'
     initialImagePreview?: string | File
-    initialCopyright?: string
-    initialDescription?: string
+    initialCopyright?: string | null
+    initialDescription?: string | null
   }
 
   const {
@@ -80,7 +80,7 @@
   watch(
     [file, copyright, description],
     ([newFile, newCopyright, newDescription]) => {
-      if (type === 'photo') {
+      if (type !== 'thumbnail') {
         return emit('changeFile', {
           file: newFile,
           copyright: newCopyright,

@@ -47,9 +47,16 @@
             <Text class="form-title" as="h2" type="title" color="cherry">
               Hero
             </Text>
+
             <File
               type="hero"
-              @change-file="(file) => (post.images[0].file = file)"
+              @change-file="
+                (file, copyright, description) => {
+                  post.images[0].file = file
+                  post.images[0].copyright = copyright
+                  post.images[0].description = description
+                }
+              "
             />
           </div>
 
@@ -167,6 +174,8 @@
       {
         type: 'hero',
         file: null,
+        copyright: null,
+        description: null,
       },
       {
         type: 'thumbnail',
@@ -178,6 +187,7 @@
       embed: false,
       id: null,
     },
+    highlight: false,
   })
 
   async function submit() {

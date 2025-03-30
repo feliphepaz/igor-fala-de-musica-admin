@@ -33,7 +33,15 @@
             <File
               type="hero"
               :initial-image-preview="post.images[0].file as string"
-              @change-file="(file) => (post.images[0].file = file)"
+              :initial-copyright="post.images[0].copyright"
+              :initial-description="post.images[0].description"
+              @change-file="
+                (file, copyright, description) => {
+                  post.images[0].file = file
+                  post.images[0].copyright = copyright
+                  post.images[0].description = description
+                }
+              "
             />
           </div>
 
@@ -157,6 +165,8 @@
       {
         type: 'hero',
         file: '',
+        copyright: null,
+        description: null,
       },
       {
         type: 'thumbnail',
@@ -168,6 +178,7 @@
       embed: false,
       id: null,
     },
+    highlight: false,
   }
   const editAlbum = ref(false)
   const modifications = ref(0)
@@ -180,6 +191,8 @@
       {
         type: 'hero',
         file: null,
+        copyright: null,
+        description: null,
       },
       {
         type: 'thumbnail',
@@ -192,6 +205,7 @@
       embed: false,
       id: null,
     },
+    highlight: false,
   })
 
   onMounted(async () => {

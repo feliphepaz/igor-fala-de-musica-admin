@@ -4,6 +4,11 @@ type Tag = {
   slug: string
 }
 
+type Spotify = {
+  embed: boolean
+  id: string | null
+}
+
 type Review = {
   album: {
     cover: string
@@ -26,6 +31,8 @@ type Post = {
     {
       type: 'hero'
       file: File | null
+      copyright: string | null
+      description: string | null
     },
     {
       type: 'thumbnail'
@@ -34,10 +41,8 @@ type Post = {
   ]
   body: Block[]
   review?: Review
-  spotify: {
-    embed: boolean
-    id: string | null
-  }
+  spotify: Spotify
+  highlight: boolean
 }
 
 type PostGetted = {
@@ -52,6 +57,8 @@ type PostGetted = {
     {
       type: 'hero'
       file: string
+      copyright: string | null
+      description: string | null
     },
     {
       type: 'thumbnail'
@@ -60,10 +67,8 @@ type PostGetted = {
   ]
   body: Block[]
   review?: Review
-  spotify: {
-    embed: boolean
-    id: string | null
-  }
+  spotify: Spotify
+  highlight: boolean
 }
 
 type Pagination = {
