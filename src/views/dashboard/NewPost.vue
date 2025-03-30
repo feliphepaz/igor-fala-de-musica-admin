@@ -245,14 +245,12 @@
             postData.tags.includes(tag.slug),
           )
 
-          for (const tag of filteredTags) {
-            await insertTag(tag)
-          }
+          await Promise.all(filteredTags.map((tag) => insertTag(tag)))
         }
 
-        for (const tag of postData.tags) {
-          await insertPostInTag(data.id, tag)
-        }
+        await Promise.all(
+          postData.tags.map((tag: string) => insertPostInTag(data.id, tag)),
+        )
       }
 
       Swal.fire({
