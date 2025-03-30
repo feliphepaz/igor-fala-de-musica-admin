@@ -51,10 +51,10 @@
             <File
               type="hero"
               @change-file="
-                (file, copyright, description) => {
-                  post.images[0].file = file
-                  post.images[0].copyright = copyright
-                  post.images[0].description = description
+                (file) => {
+                  post.images[0].file = file.file
+                  post.images[0].copyright = file.copyright
+                  post.images[0].description = file.description
                 }
               "
             />
@@ -66,7 +66,7 @@
             </Text>
             <File
               type="thumbnail"
-              @change-file="(file) => (post.images[1].file = file)"
+              @change-file="(file) => (post.images[1].file = file.file)"
             />
           </div>
         </div>

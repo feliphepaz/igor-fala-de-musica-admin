@@ -24,7 +24,6 @@
 
         <File
           v-if="block.type === 'photo'"
-          :initial-image-preview="blocks[index].file"
           @change-file="(file) => editBlock(index, undefined, undefined, file)"
         />
 

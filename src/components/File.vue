@@ -52,7 +52,7 @@
 
   interface Props {
     type?: 'hero' | 'thumbnail' | 'photo'
-    initialImagePreview?: string | File
+    initialImagePreview?: any
     initialCopyright?: string | null
     initialDescription?: string | null
   }
@@ -64,7 +64,7 @@
     initialDescription = '',
   } = defineProps<Props>()
 
-  const file = ref<File | null>(null)
+  const file = ref<File | string | null>(null)
   const imagePreview = ref(initialImagePreview)
   const copyright = ref(initialCopyright)
   const description = ref(initialDescription)
@@ -78,28 +78,43 @@
   })
 
   watch(
-    [file, copyright, description],
-    ([newFile, newCopyright, newDescription]) => {
+    [
+      file,
+      copyright,
+      description,
+      () => initialImagePreview,
+      () => initialCopyright,
+      () => initialDescription,
+    ],
+    ([
+      newFile,
+      newCopyright,
+      newDescription,
+      newInitialImagePreview,
+      newInitialCopyright,
+      newInitialDescription,
+    ]) => {
+      if (newInitialImagePreview) {
+        if (newInitialImagePreview instanceof File)
+          imagePreview.value = URL.createObjectURL(newInitialImagePreview)
+        else imagePreview.value = newInitialImagePreview
+
+        file.value = newInitialImagePreview
+      }
+
+      if (newInitialCopyright && newInitialDescription) {
+        copyright.value = newInitialCopyright
+        description.value = newInitialDescription
+      }
+
       if (type !== 'thumbnail') {
-        return emit('changeFile', {
+        emit('changeFile', {
           file: newFile,
           copyright: newCopyright,
           description: newDescription,
         })
-      }
-
-      emit('changeFile', newFile)
-    },
-    { immediate: true },
-  )
-
-  watch(
-    () => initialImagePreview,
-    (newInitialImagePreview) => {
-      if (newInitialImagePreview instanceof File) {
-        imagePreview.value = URL.createObjectURL(newInitialImagePreview)
       } else {
-        imagePreview.value = newInitialImagePreview
+        emit('changeFile', { file: newFile })
       }
     },
     { immediate: true },

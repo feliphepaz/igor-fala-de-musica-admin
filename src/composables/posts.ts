@@ -17,6 +17,7 @@ export default function usePosts() {
       .from('posts')
       .select()
       .eq('author', authorId)
+      .order('created_at', { ascending: false })
 
     if (error) throw Error
 

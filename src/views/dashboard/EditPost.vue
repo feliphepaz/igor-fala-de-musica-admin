@@ -36,10 +36,10 @@
               :initial-copyright="post.images[0].copyright"
               :initial-description="post.images[0].description"
               @change-file="
-                (file, copyright, description) => {
-                  post.images[0].file = file
-                  post.images[0].copyright = copyright
-                  post.images[0].description = description
+                (file) => {
+                  post.images[0].file = file.file
+                  post.images[0].copyright = file.copyright
+                  post.images[0].description = file.description
                 }
               "
             />
@@ -53,7 +53,7 @@
             <File
               type="thumbnail"
               :initial-image-preview="post.images[1].file as string"
-              @change-file="(file) => (post.images[1].file = file)"
+              @change-file="(file) => (post.images[1].file = file.file)"
             />
           </div>
         </div>
