@@ -109,6 +109,7 @@
             :band="post.review.album.artist"
             :year="post.review.album.year"
             :cover="post.review.album.cover"
+            v-model:score="post.review.review.score"
             disable-change-score
           />
         </div>

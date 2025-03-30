@@ -50,12 +50,16 @@
 
   defineProps<Props>()
 
-  const score = ref('5.0')
+  const score = defineModel('score', {
+    default: '5.0',
+  })
 
   const emit = defineEmits(['changeReviewCard'])
 
+  const scoreRef = ref(score)
+
   const ratingText = computed(() => {
-    const scoreToNumber = +score.value
+    const scoreToNumber = +scoreRef.value
 
     if (scoreToNumber >= 10) return 'Obra-prima 🔥'
     if (scoreToNumber >= 8.5) return 'Ótimo!'
