@@ -2,8 +2,6 @@
 
 Painel administrativo do projeto **Igor Fala de Música**, desenvolvido com Vue 3 e Vite. Ele permite o gerenciamento de conteúdo, categorias, autores e tags por meio de autenticação com Google e integração com Supabase.
 
-**Aplicação:** https://igor-fala-de-musica-admin.vercel.app
-
 ## Funcionalidades
 
 - Login com Google via Supabase Auth
